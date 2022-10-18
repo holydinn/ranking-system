@@ -200,6 +200,26 @@ function simpsonRule(rankedMatrix) {
   return {name: 'Правило Симпсона', resRank}
 }
 
+//Правило Борда
+function bordRule(rankedMatrix) {
+  let altsPoints = Array(participants.length).fill(0)  //очки альтернатив в сравнении
+  resRank = []
+
+  //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
+  rankedMatrix = transposeMatrix(rankedMatrix)
+
+  rankedMatrix.forEach(exp => {
+    exp.forEach((alt, altIndex) => {
+      altsPoints[alt - 1] += exp.length - (altIndex - 1)
+    })
+  })
+
+  resRank = sortByKey(altsPoints)
+
+  return {name: 'Правило Борда>', resRank}
+
+}
+
 const expertRangMatrix = createMatrixExpertRang()
 //console.log(expertRangMatrix)
 
@@ -214,3 +234,6 @@ console.log(resCopelandRule)
 
 const resSimpsonRule = simpsonRule(expertRangMatrix)
 console.log(resSimpsonRule)
+
+const resBordRule = bordRule(expertRangMatrix)
+console.log(resBordRule)
