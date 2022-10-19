@@ -375,6 +375,33 @@ function deleteMatrixRowClm(matrix, altIndex) {
 
 }
 
+//Коэффициент конкордации
+function concordaceCoef() {
+
+  let m = experts.length
+  let n = participants.length
+  let coef=0
+  let s = 0
+  let sum
+  let mr = 0
+  experts.forEach(exp => {
+    exp.points.forEach(alt => {
+      mr += alt
+    })
+  })
+  for (let i = 0; i < participants.length; i++) {
+    sum = 0
+    for (let j = 0; j < experts.length; j++) {
+      sum += experts[j].points[i]
+    }
+    s = s + Math.pow((sum - mr), 2)
+
+  }
+  coef=12*s/(Math.pow(m,2)*(Math.pow(n,3)-n))
+
+  return coef
+}
+
 const expertRangMatrix = createMatrixExpertRang()
 //console.log(expertRangMatrix)
 
@@ -409,6 +436,8 @@ console.log(resMedianKemeny)
 
 const resNewMedianKemeny = newMedianKemeny(transRankedMatrix)
 console.log(resNewMedianKemeny)
+
+console.log('Коэффицент конкордации: ',concordaceCoef())
 
 const end = new Date().getTime();
 console.log(`SecondWay: ${end - start}ms`);
