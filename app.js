@@ -4,23 +4,26 @@ const experts = [
   {
     name: 'exp1',
     index: 1,
-    points: [1, 2, 5, 6, 4, 3]
+    points: [4, 5, 3, 6, 2, 1]
   },
   {
     name: 'exp2',
     index: 2,
-    points: [5, 6, 1, 3, 4, 2]
+    points: [5, 1, 4, 6, 2, 3]
   },
   {
     name: 'exp3',
     index: 3,
-    points: [4, 5, 6, 2, 1, 3]
+    points: [5, 2, 4, 6, 1, 3]
   }
 ]
 let participants = ['part1', 'part2', 'part3', 'part4', 'part5', 'part6']
 let resRank = []
 
-createExpert('exp4', [4, 6, 5, 3, 1, 2])
+createExpert('exp4', [3, 4, 5, 6, 1, 2])
+createExpert('exp5', [6, 1, 4, 5, 3, 2])
+createExpert('exp6', [6, 4, 3, 1, 2, 5])
+
 
 function createExpert(name, points) {
   experts.push({name: name, index: experts.length + 1, points: points})
@@ -132,6 +135,7 @@ function condorcetWinner(rankedMatrix) {
     for (let j = i + 1; j < participants.length; j++) {
       if (comparisonMatrix[i][j] > comparisonMatrix[j][i]) {
         altsPoints[i]++
+        continue
       } else if (comparisonMatrix[i][j] === comparisonMatrix[j][i]) {
         altsPoints[j]++
         altsPoints[i]++
@@ -375,6 +379,7 @@ const expertRangMatrix = createMatrixExpertRang()
 //console.log(expertRangMatrix)
 
 const transRankedMatrix = transposeMatrix(expertRangMatrix)  //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
+
 // const resRankings=[]
 // resRankings.push(relativeMajorityRule(expertRangMatrix))
 // resRankings.push(condorcetWinner(transRankedMatrix))
