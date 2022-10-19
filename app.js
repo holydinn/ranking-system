@@ -213,7 +213,7 @@ function bordRule(rankedMatrix) {
 }
 
 //создание матрицы отношений
-function createRelationalMatrix(matrix) {
+function createRelationalMatrix(matrix, key = '') {
   let expertRank = matrix.slice()
 
   let relMatrix = Array(participants.length).fill(0).map(() => Array(participants.length).fill(0))
@@ -228,7 +228,7 @@ function createRelationalMatrix(matrix) {
       // -1 - если альт-ва есть в preferredItems, т.е. она хуже
       if (!preferredItems.includes(index)) {
         array[index] = 1
-      } else {
+      } else if (preferredItems.includes(index) && key != 'scale') {
         array[index] = -1
       }
       array[preferredItems[0]] = 0
@@ -376,11 +376,11 @@ function deleteMatrixRowClm(matrix, altIndex) {
 }
 
 //Коэффициент конкордации
-function concordaceCoef() {
+function concordanceCof() {
 
   let m = experts.length
   let n = participants.length
-  let coef=0
+  let cof = 0
   let s = 0
   let sum
   let mr = 0
@@ -397,47 +397,81 @@ function concordaceCoef() {
     s = s + Math.pow((sum - mr), 2)
 
   }
-  coef=12*s/(Math.pow(m,2)*(Math.pow(n,3)-n))
+  cof = 12 * s / (Math.pow(m, 2) * (Math.pow(n, 3) - n))
 
-  return coef
+  return cof
+}
+
+
+function oneDimensionalScaling(rankedMatrix) {
+  let relMatrices = []  //массив матриц отношений
+
+  //матрица предпчтений
+  rankedMatrix.forEach((exp, expIndex) => {
+    relMatrices[expIndex] = createRelationalMatrix(exp, 'scale')
+  })
+
+  //частотная матрица предпочтений
+  let preferenceMatrix = multiplyMatrix(sumMatrix(relMatrices), (1 / relMatrices.length))
+
+  console.log(preferenceMatrix)
+
+}
+
+function multiplyMatrix(matrix, num) {
+  let resMatrix =  Array(matrix.length).fill(0).map(() => Array(matrix.length).fill(0))
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix.length; j++) {
+      resMatrix[i][j] = +(((num * matrix[i][j])).toFixed(2))
+    }
+  }
+  return resMatrix
+}
+
+function sumMatrix(matrixArray) {
+  let resMatrix = Array(matrixArray[0].length).fill(0).map(() => Array(matrixArray[0].length).fill(0))
+
+  matrixArray.forEach(matr => {
+    for (let i = 0; i < matr.length; i++) {
+      for (let j = 0; j < matr.length; j++) {
+        resMatrix[i][j] += matr[i][j]
+      }
+    }
+  })
+  return resMatrix
+
 }
 
 const expertRangMatrix = createMatrixExpertRang()
 //console.log(expertRangMatrix)
 
 const transRankedMatrix = transposeMatrix(expertRangMatrix)  //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
+const oneDimenScale = oneDimensionalScaling(transRankedMatrix)
+//console.log(resNewMedianKemeny)
 
-// const resRankings=[]
-// resRankings.push(relativeMajorityRule(expertRangMatrix))
-// resRankings.push(condorcetWinner(transRankedMatrix))
-// resRankings.push(copelandRule(transRankedMatrix))
-// resRankings.push(simpsonRule(transRankedMatrix))
-// resRankings.push(bordRule(transRankedMatrix))
-// console.log(resRankings[0].resRank)
-
-const start = new Date().getTime();
-const resMajorityRule = relativeMajorityRule(expertRangMatrix)
-console.log(resMajorityRule)
-
-const resCondorcetWinner = condorcetWinner(transRankedMatrix)
-console.log(resCondorcetWinner)
-
-const resCopelandRule = copelandRule(transRankedMatrix)
-console.log(resCopelandRule)
-
-const resSimpsonRule = simpsonRule(transRankedMatrix)
-console.log(resSimpsonRule)
-
-const resBordRule = bordRule(transRankedMatrix)
-console.log(resBordRule)
-
-const resMedianKemeny = medianKemeny(transRankedMatrix)
-console.log(resMedianKemeny)
-
-const resNewMedianKemeny = newMedianKemeny(transRankedMatrix)
-console.log(resNewMedianKemeny)
-
-console.log('Коэффицент конкордации: ',concordaceCoef())
-
-const end = new Date().getTime();
-console.log(`SecondWay: ${end - start}ms`);
+// const start = new Date().getTime();
+// const resMajorityRule = relativeMajorityRule(expertRangMatrix)
+// console.log(resMajorityRule)
+//
+// const resCondorcetWinner = condorcetWinner(transRankedMatrix)
+// console.log(resCondorcetWinner)
+//
+// const resCopelandRule = copelandRule(transRankedMatrix)
+// console.log(resCopelandRule)
+//
+// const resSimpsonRule = simpsonRule(transRankedMatrix)
+// console.log(resSimpsonRule)
+//
+// const resBordRule = bordRule(transRankedMatrix)
+// console.log(resBordRule)
+//
+// const resMedianKemeny = medianKemeny(transRankedMatrix)
+// console.log(resMedianKemeny)
+//
+// const resNewMedianKemeny = newMedianKemeny(transRankedMatrix)
+// console.log(resNewMedianKemeny)
+//
+// console.log('Коэффицент конкордации: ',concordanceCof())
+//
+// const end = new Date().getTime();
+// console.log(`SecondWay: ${end - start}ms`);
