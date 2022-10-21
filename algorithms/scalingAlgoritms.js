@@ -1,17 +1,23 @@
-import {alternatives} from "../context";
-const jStat = require("jstat");
-import * as myF from "./helpFunctions";
+import {experts, alternatives} from "../context.js";
+import jStat from "jstat";
+import * as myF from "./helpFunctions.js";
 
-export const oneDimensionalScaling = (rankedMatrix) => {
+const rankedMatrix = myF.createMatrixExpertRang()
+
+//транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
+const transRankedMatrix = jStat.transpose(rankedMatrix)
+
+
+export const oneDimensionalScaling = () => {
   let relMatrices = []  //массив матриц отношений
 
   //матрица предпчтений
-  rankedMatrix.forEach((exp, expIndex) => {
+  transRankedMatrix.forEach((exp, expIndex) => {
     relMatrices[expIndex] = myF.createRelationalMatrix(exp, 'scale')
   })
 
   //частотная матрица предпочтений (p-)
-  let preferenceMatrix = multiplyMatrix(sumMatrix(relMatrices), (1 / relMatrices.length))
+  let preferenceMatrix = myF.multiplyMatrix(myF.sumMatrix(relMatrices), (1 / relMatrices.length))
 
   //console.log(preferenceMatrix)
 
@@ -61,12 +67,12 @@ export const oneDimensionalScaling = (rankedMatrix) => {
   })
   let sigma = jStat.sum(diffFrecs) / (alternatives.length * (alternatives.length - 1))
 
-  console.log('наибольшая частоста: ', jStat.max(maxFrecs))
-  console.log('3 сигма: ', 3 * sigma)
+  // console.log('наибольшая частоста: ', jStat.max(maxFrecs))
+  // console.log('3 сигма: ', 3 * sigma)
 
   if (jStat.max(maxFrecs) < 3 * sigma) {
-    return console.log("Экспертные оценки не противоречивы")
-  } else {
-    return console.log("Экспертные оценки противоречивы")
+    return ("Экспертные оценки не противоречивы")
   }
-}
+  return ("Экспертные оценки противоречивы")
+
+};

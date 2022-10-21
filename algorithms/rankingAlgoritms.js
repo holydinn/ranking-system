@@ -1,9 +1,17 @@
-import {alternatives, experts, resRank} from "../context";
-import * as myF from "./helpFunctions";
+import {alternatives, experts} from "../context.js";
+import * as myF from "./helpFunctions.js";
 import jStat from "jstat";
+import {createMatrixExpertRang} from "./helpFunctions.js";
+
+let resRank = []
+
+const rankedMatrix = createMatrixExpertRang()
+
+//транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
+const transRankedMatrix = jStat.transpose(rankedMatrix)
 
 //Правило относительного большинства
-export const relativeMajorityRule = (rankedMatrix) => {
+export const relativeMajorityRule = () => {
   resRank = []
 
   rankedMatrix.forEach((item, index) => {
@@ -27,11 +35,12 @@ export const relativeMajorityRule = (rankedMatrix) => {
 };
 
 //Победитель по Кондорсе
-export const condorcetWinner = (rankedMatrix) => {
+export const condorcetWinner = () => {
+  resRank = []
   let altsPoints = Array(alternatives.length).fill(0)  //очки альтернативы в попарном сравнении
 
   //матрица сравнений
-  let comparisonMatrix = myF.createCompareMatrix(rankedMatrix)
+  let comparisonMatrix = myF.createCompareMatrix(transRankedMatrix)
 
   //находим наилучшую альт-ву
   for (let i = 0; i < alternatives.length - 1; i++) {
@@ -54,12 +63,12 @@ export const condorcetWinner = (rankedMatrix) => {
 };
 
 //Правило Копленда
-export const copelandRule = (rankedMatrix) => {
+export const copelandRule = () => {
   let altsPoints = Array(alternatives.length).fill(0)  //очки альтернативы в попарном сравнении
   resRank = []
 
   //матрица сравнений
-  let comparisonMatrix = myF.createCompareMatrix(rankedMatrix)
+  let comparisonMatrix = myF.createCompareMatrix(transRankedMatrix)
 
   //находим наилучшую альт-ву
   for (let i = 0; i < alternatives.length - 1; i++) {
@@ -79,13 +88,13 @@ export const copelandRule = (rankedMatrix) => {
 };
 
 //Правило Симпсона
-export const simpsonRule = (rankedMatrix) => {
+export const simpsonRule = () => {
   let altsPoints = Array(alternatives.length).fill(0)  //очки альтернативы в попарном сравнении
   let temp = []
   resRank = []
 
   //матрица сравнений
-  let comparisonMatrix = myF.createCompareMatrix(rankedMatrix)
+  let comparisonMatrix = myF.createCompareMatrix(transRankedMatrix)
 
   //находим наилучшую альт-ву
   for (let i = 0; i < alternatives.length; i++) {
@@ -99,11 +108,11 @@ export const simpsonRule = (rankedMatrix) => {
 };
 
 //Правило Борда
-export const bordRule = (rankedMatrix) => {
+export const bordRule = () => {
   let altsPoints = Array(alternatives.length).fill(0)  //очки альтернатив в сравнении
   resRank = []
 
-  rankedMatrix.forEach(exp => {
+  transRankedMatrix.forEach(exp => {
     exp.forEach((alt, altIndex) => {
       altsPoints[alt - 1] += exp.length - (altIndex - 1)
     })
@@ -116,12 +125,12 @@ export const bordRule = (rankedMatrix) => {
 };
 
 //Медиана Кемени
-export const medianKemeny = (rankedMatrix) => {
+export const medianKemeny = () => {
 
   resRank = []
   let relMatrices = []  //массив матриц отношений
 
-  rankedMatrix.forEach((exp, expIndex) => {
+  transRankedMatrix.forEach((exp, expIndex) => {
     relMatrices[expIndex] = myF.createRelationalMatrix(exp)
   })
 
@@ -130,18 +139,18 @@ export const medianKemeny = (rankedMatrix) => {
 
   const indexMinDist = myF.findMinDist(distanceMatrix)
 
-  resRank = rankedMatrix[indexMinDist]
+  resRank = transRankedMatrix[indexMinDist]
 
   return {name: 'Медиана Кемени', resRank}
 };
 
 //Медиана Кемени в виде новой ранжировки
-export const newMedianKemeny = (rankedMatrix) => {
+export const newMedianKemeny = () => {
   resRank = []
   let relMatrices = []  //массив матриц отношений
 
   //построение матриц отношений
-  rankedMatrix.forEach((exp, expIndex) => {
+  transRankedMatrix.forEach((exp, expIndex) => {
     relMatrices[expIndex] = myF.createRelationalMatrix(exp)
   })
 
@@ -166,7 +175,6 @@ export const newMedianKemeny = (rankedMatrix) => {
 
   return {name: 'Медиана Кемени в виде новой ранжировки', resRank}
 };
-
 
 //Коэффициент конкордации
 export const concordanceCof = () => {

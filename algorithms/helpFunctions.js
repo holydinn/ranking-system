@@ -1,7 +1,13 @@
-const jStat = require('jstat')
-const _ = require("lodash");
+import jStat from "jstat";
+import _ from "lodash";
 
-import {experts, alternatives} from "../context";
+import {experts, alternatives} from "../context.js";
+
+// export const transposeMatrix=(matrix)=> {
+//   matrix = matrix[0].map((column, index) => matrix
+//     .map(row => row[index]))
+//   return matrix
+// }
 
 export const createExpert = (name, points) => {
   experts.push({name: name, index: experts.length + 1, points: points})

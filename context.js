@@ -14,6 +14,5 @@ export const experts = [
     index: 3,
     points: [5, 2, 4, 6, 1, 3]
   }
-]
-export const alternatives = ['alt1', 'alt2', 'alt3', 'alt4', 'alt5', 'alt6']
-export let resRank = []
+];
+export const alternatives = ['alt1', 'alt2', 'alt3', 'alt4', 'alt5', 'alt6'];

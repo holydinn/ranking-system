@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "diplom",
   "version": "1.0.0",
   "description": "system of ranking and scaling",
