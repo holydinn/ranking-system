@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const jStat = require('jstat')
-//import inv from 'norminv'
 
 const experts = [
   {
