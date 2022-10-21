@@ -1,11 +1,10 @@
 import {alternatives, experts} from "../context.js";
 import * as myF from "./helpFunctions.js";
 import jStat from "jstat";
-import {createMatrixExpertRang} from "./helpFunctions.js";
 
 let resRank = []
-
-const rankedMatrix = createMatrixExpertRang()
+//матрица эксперт-ранг
+const rankedMatrix = myF.createMatrixExpertRang()
 
 //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
 const transRankedMatrix = jStat.transpose(rankedMatrix)
@@ -82,6 +81,7 @@ export const copelandRule = () => {
       }
     }
   }
+
   resRank = myF.sortByKey(altsPoints)
 
   return {name: 'Правило Копленда', resRank}

@@ -11,7 +11,7 @@ const transRankedMatrix = jStat.transpose(rankedMatrix)
 export const oneDimensionalScaling = () => {
   let relMatrices = []  //массив матриц отношений
 
-  //матрица предпчтений
+  //матрица предпочтений
   transRankedMatrix.forEach((exp, expIndex) => {
     relMatrices[expIndex] = myF.createRelationalMatrix(exp, 'scale')
   })
@@ -19,9 +19,8 @@ export const oneDimensionalScaling = () => {
   //частотная матрица предпочтений (p-)
   let preferenceMatrix = myF.multiplyMatrix(myF.sumMatrix(relMatrices), (1 / relMatrices.length))
 
-  //console.log(preferenceMatrix)
-
-  let normDevMatrix = jStat.zeros(alternatives.length) // матрица нормированых отклонений (z-)
+  // матрица нормированых отклонений (z-)
+  let normDevMatrix = jStat.zeros(alternatives.length)
 
   preferenceMatrix.forEach((row, rowIndex) => {
     row.forEach((col, colIndex) => {
@@ -30,14 +29,16 @@ export const oneDimensionalScaling = () => {
       }
     })
   })
-  //console.log(normDevMatrix)
 
-  let averageNormDev = []  //среднее значение нормированных отклонений (z~)
+  //среднее значение нормированных отклонений (z~)
+  let averageNormDev = []
   normDevMatrix.forEach((row, rowIndex) => {
     //averageNormDev[rowIndex] = +((jStat.sum(row) / row.length).toFixed(2))
     averageNormDev[rowIndex] = jStat.sum(row) / row.length
   })
-  let averagePref = []  // среднее значение частотных предпочтнений (p~)
+
+  // среднее значение частотных предпочтнений (p~)
+  let averagePref = []
   for (let i = 0; i < averageNormDev.length; i++) {
     //averagePref[i] = +((jStat.normal.cdf(averageNormDev[i], 0, 1)).toFixed(2))
     averagePref[i] = jStat.normal.cdf(averageNormDev[i], 0, 1)
@@ -49,6 +50,9 @@ export const oneDimensionalScaling = () => {
     indOfRelImportance[i] = averagePref[i] / averageInd
     //indOfRelImportance[i]=+((averagePref[i]/averageInd).toFixed(2))
   }
+
+  let resRank = myF.sortByKey(indOfRelImportance)
+
   let diffNormDev = jStat.zeros(alternatives.length)  //разности средних нормированных отклоннений (~zi-~zj)
   let frecPref = jStat.zeros(alternatives.length)  //частота предпочтений i перед j
   for (let i = 0; i < alternatives.length - 1; i++) {
@@ -71,8 +75,8 @@ export const oneDimensionalScaling = () => {
   // console.log('3 сигма: ', 3 * sigma)
 
   if (jStat.max(maxFrecs) < 3 * sigma) {
-    return ("Экспертные оценки не противоречивы")
+    return {concl: "Экспертные оценки не противоречивы", resRank}
   }
-  return ("Экспертные оценки противоречивы")
+  return {concl: "Экспертные оценки противоречивы"}
 
 };
