@@ -190,7 +190,7 @@ export const concordanceCof = () => {
       mr += alt
     })
   })
-  mr=mr/n
+  mr = mr / n
   for (let i = 0; i < alternatives.length; i++) {
     sum = 0
     for (let j = 0; j < experts.length; j++) {
