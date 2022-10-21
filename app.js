@@ -1,4 +1,6 @@
 const _ = require('lodash')
+const jStat = require('jstat')
+//import inv from 'norminv'
 
 const experts = [
   {
@@ -29,11 +31,11 @@ function createExpert(name, points) {
   experts.push({name: name, index: experts.length + 1, points: points})
 }
 
-function transposeMatrix(matrix) {
-  matrix = matrix[0].map((column, index) => matrix
-    .map(row => row[index]))
-  return matrix
-}
+// function transposeMatrix(matrix) {
+//   matrix = matrix[0].map((column, index) => matrix
+//     .map(row => row[index]))
+//   return matrix
+// }
 
 function createCompareMatrix(rankMatrix) {
   //матрица попарных сравнений альтернатив
@@ -216,7 +218,7 @@ function bordRule(rankedMatrix) {
 function createRelationalMatrix(matrix, key = '') {
   let expertRank = matrix.slice()
 
-  let relMatrix = Array(participants.length).fill(0).map(() => Array(participants.length).fill(0))
+  let relMatrix = jStat.zeros(participants.length)
   let preferredItems = []  //массив предпочтительных альтернатив
 
   do {
@@ -254,7 +256,7 @@ function findDistance(matrix1, matrix2) {
 
 //Матрица расстояний для ранжировок по Кемени
 function createDistanceMatrix(matrixArray) {
-  let distMatrix = Array(matrixArray.length).fill(0).map(() => Array(matrixArray.length).fill(0))
+  let distMatrix = jStat.zeros(matrixArray.length)
   let curMatrix, nextMatrix
 
   for (curMatrix = 0; curMatrix < matrixArray.length - 1; curMatrix++) {
@@ -310,7 +312,7 @@ function medianKemeny(rankedMatrix) {
 //Матрица потерь для новой медианы Кемени
 function createLossMatrix(matrixArray) {
   let i, j
-  let lossMatrix = Array(participants.length).fill(0).map(() => Array(participants.length).fill(0))
+  let lossMatrix = jStat.zeros(participants.length)
 
   matrixArray.forEach(matrix => {
     for (i = 0; i < matrix.length; i++) {
@@ -402,7 +404,6 @@ function concordanceCof() {
   return cof
 }
 
-
 function oneDimensionalScaling(rankedMatrix) {
   let relMatrices = []  //массив матриц отношений
 
@@ -411,25 +412,92 @@ function oneDimensionalScaling(rankedMatrix) {
     relMatrices[expIndex] = createRelationalMatrix(exp, 'scale')
   })
 
-  //частотная матрица предпочтений
+  //частотная матрица предпочтений (p-)
   let preferenceMatrix = multiplyMatrix(sumMatrix(relMatrices), (1 / relMatrices.length))
 
-  console.log(preferenceMatrix)
+  //console.log(preferenceMatrix)
 
+  let normDevMatrix = jStat.zeros(participants.length) // матрица нормированых отклонений (z-)
+
+  preferenceMatrix.forEach((row, rowIndex) => {
+    row.forEach((col, colIndex) => {
+      if (colIndex !== rowIndex) {
+        normDevMatrix[rowIndex][colIndex] = findNormalInv(col)
+      }
+    })
+  })
+  //console.log(normDevMatrix)
+
+  let averageNormDev = []  //среднее значение нормированных отклонений (z~)
+  normDevMatrix.forEach((row, rowIndex) => {
+    //averageNormDev[rowIndex] = +((jStat.sum(row) / row.length).toFixed(2))
+    averageNormDev[rowIndex] = jStat.sum(row) / row.length
+  })
+  let averagePref = []  // среднее значение частотных предпочтнений (p~)
+  for (let i = 0; i < averageNormDev.length; i++) {
+    //averagePref[i] = +((jStat.normal.cdf(averageNormDev[i], 0, 1)).toFixed(2))
+    averagePref[i] = jStat.normal.cdf(averageNormDev[i], 0, 1)
+  }
+
+  let indOfRelImportance = []  //показатель относительной важности (p*)
+  let averageInd = jStat.sum(averagePref)
+  for (let i = 0; i < averagePref.length; i++) {
+    indOfRelImportance[i] = averagePref[i] / averageInd
+    //indOfRelImportance[i]=+((averagePref[i]/averageInd).toFixed(2))
+  }
+  let diffNormDev = jStat.zeros(participants.length)  //разности средних нормированных отклоннений (~zi-~zj)
+  let frecPref = jStat.zeros(participants.length)  //частота предпочтений i перед j
+  for (let i = 0; i < participants.length - 1; i++) {
+    for (let j = i + 1; j < participants.length; j++) {
+      diffNormDev[i][j] = averageNormDev[i] - averageNormDev[j]
+      diffNormDev[j][i] = averageNormDev[j] - averageNormDev[i]
+      frecPref[i][j] = jStat.normal.cdf(diffNormDev[i][j], 0, 1)
+      frecPref[j][i] = jStat.normal.cdf(diffNormDev[j][i], 0, 1)
+    }
+  }
+  let diffFrecs = []
+  let maxFrecs = []
+  frecPref.forEach((row, rowIndex) => {
+    diffFrecs[rowIndex] = jStat.sum(row)
+    maxFrecs[rowIndex] = jStat.max(row)
+  })
+  let sigma = jStat.sum(diffFrecs) / (participants.length * (participants.length - 1))
+
+  console.log('наибольшая частоста: ', jStat.max(maxFrecs))
+  console.log('3 сигма: ', 3 * sigma)
+
+  if (jStat.max(maxFrecs) < 3 * sigma) {
+    return console.log("Экспертные оценки не противоречивы")
+  } else {
+    return console.log("Экспертные оценки противоречивы")
+  }
+}
+
+function findNormalInv(x) {
+  let res
+  if (x === 0) {
+    res = -3.9
+  } else if (x === 1) {
+    res = 3.9
+  } else {
+    //res = +((jStat.normal.inv(x, 0, 1)).toFixed(2))
+    res = jStat.normal.inv(x, 0, 1)
+  }
+
+  return res
 }
 
 function multiplyMatrix(matrix, num) {
-  let resMatrix =  Array(matrix.length).fill(0).map(() => Array(matrix.length).fill(0))
-  for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix.length; j++) {
-      resMatrix[i][j] = +(((num * matrix[i][j])).toFixed(2))
-    }
-  }
+  let resMatrix = jStat.map(matrix, function (x) {
+    //return +((x * num).toFixed(2))
+    return x * num
+  })
+
   return resMatrix
 }
 
 function sumMatrix(matrixArray) {
-  let resMatrix = Array(matrixArray[0].length).fill(0).map(() => Array(matrixArray[0].length).fill(0))
+  let resMatrix = jStat.zeros(matrixArray[0].length)
 
   matrixArray.forEach(matr => {
     for (let i = 0; i < matr.length; i++) {
@@ -445,8 +513,9 @@ function sumMatrix(matrixArray) {
 const expertRangMatrix = createMatrixExpertRang()
 //console.log(expertRangMatrix)
 
-const transRankedMatrix = transposeMatrix(expertRangMatrix)  //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
+const transRankedMatrix = jStat.transpose(expertRangMatrix)  //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
 const oneDimenScale = oneDimensionalScaling(transRankedMatrix)
+
 //console.log(resNewMedianKemeny)
 
 // const start = new Date().getTime();
