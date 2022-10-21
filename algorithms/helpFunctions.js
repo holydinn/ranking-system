@@ -55,6 +55,10 @@ export const sortByKey = (altsPoints) => {
   for (i = 0; i < keys.length; i++) {
     res[i] = temp[keys[i]]
   }
+  //console.log(typeof res[0])
+  if (res.length === alternatives.length) {
+    res = res.flat(1)
+  }
   return res
 };
 
@@ -92,7 +96,7 @@ export const createRelationalMatrix = (matrix, key = '') => {
       // -1 - если альт-ва есть в preferredItems, т.е. она хуже
       if (!preferredItems.includes(index)) {
         array[index] = 1
-      } else if (preferredItems.includes(index) && key != 'scale') {
+      } else if (preferredItems.includes(index) && key !== 'scale') {
         array[index] = -1
       }
       array[preferredItems[0]] = 0
@@ -202,12 +206,11 @@ export const findNormalInv = (x) => {
 }
 
 export const multiplyMatrix = (matrix, num) => {
-  let resMatrix = jStat.map(matrix, function (x) {
+  return jStat.map(matrix, function (x) {
     //return +((x * num).toFixed(2))
     return x * num
   })
 
-  return resMatrix
 }
 
 export const sumMatrix = (matrixArray) => {
