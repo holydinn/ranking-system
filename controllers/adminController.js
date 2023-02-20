@@ -1,3 +1,5 @@
+const ApiError=require('../error/ApiError')
+
 class AdminController {
   async registration(req, res) {
 
@@ -7,10 +9,12 @@ class AdminController {
 
   }
 
-  async check(req, res) {
-
+  async check(req, res,next) {
+    const {id} =req.query
+    if(!id){
+      return next(ApiError.badRequest('No ID'))
+    }
   }
-
 
 }
 
