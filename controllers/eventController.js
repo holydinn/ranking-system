@@ -1,44 +1,34 @@
 const {Event} = require('../models/models')
-const ApiError = require('../error/ApiError')
 
 class EventController {
-  async create(req, res, next) {
+  async create(req, res) {
     try {
-      const {name, alt_num, exp_num, adminId} = req.body
-      const event = await Event.create({name, alt_num, exp_num, adminId})
+      const {name} = req.body
+      const event = await Event.create({name, adminId: req.user.id})
       return res.json(event)
     } catch (e) {
-      next(ApiError.badRequest((e.message)))
+      console.log(e)
+      res.status(500).json({message: 'Что-то пошло не так'})
     }
   }
 
-  async getAll(req, res, next) {
+  async getAll(req, res) {
     try {
-      let {adminId, limit, page} = req.query
-      page = page || 1
-      limit = limit || 20
-      let offset = page * limit - limit
-      let events
-
-      if (!adminId) {
-        events = await Event.findAndCountAll({where: limit, offset})
-      } else {
-        events = await Event.findAndCountAll({where: {adminId}, limit, offset})
-      }
-
+      const events = await Event.findAll({where: {adminId: req.user.id}})
       return res.json(events)
+
     } catch (e) {
-      next(ApiError.badRequest((e.message)))
+      res.status(500).json({message: 'Что-то пошло не так'})
     }
   }
 
-  async getOne(req, res, next) {
+  async getOne(req, res) {
     try {
-      const {id} = req.params
-      const events = await Event.findOne({where: {id}})
-      return res.json(events)
+      //const {id} = req.params
+      const event = await Event.findOne({where:{id:req.params.id, adminId: req.user.id}})
+      return res.json(event)
     } catch (e) {
-      next(ApiError.badRequest((e.message)))
+      res.status(500).json({message: 'Что-то пошло не так'})
     }
   }
 }
