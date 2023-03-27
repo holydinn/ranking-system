@@ -2,9 +2,9 @@
   "name": "diplom",
   "version": "1.0.0",
   "description": "system of ranking and scaling",
-  "main": "client/algoritmLogic/app.js",
+  "main": "../client/algoritmLogic/app.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon server/index.js"
   },
   "author": "Diana Imamieva <diana.imamieva@yandex.ru>",
   "license": "ISC",
