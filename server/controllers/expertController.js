@@ -6,6 +6,11 @@ class ExpertController {
     try {
       const {name, eventId} = req.body
       const expert = await Expert.create({name, eventId})
+        .then((expert)=>{
+          const savedId=expert.id
+          expert.update({link:`localhost:5000/api/vote/${savedId}`})
+        })
+
       return res.json(expert)
     } catch (e) {
       console.log(e)
