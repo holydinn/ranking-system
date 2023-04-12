@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Votes = () => {
+const VotePage = () => {
   return (
     <div>
-      votes
+      vote page
     </div>
   );
 };
 
-export default Votes;
+export default VotePage;

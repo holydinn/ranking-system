@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
 import {Context} from "../index.js";
-import {Container, Nav, Navbar} from "react-bootstrap";
+import {Nav, Navbar} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {observer} from "mobx-react-lite";
+import '../index.css'
 
 const SideBar = observer(() => {
   const {user} = useContext(Context)
@@ -13,25 +14,23 @@ const SideBar = observer(() => {
     user.setIsAuth(false)
   }
   return (
-    <Navbar bg="dark" variant="dark" sticky="top">
-      <Container>
-        <Navbar.Brand href='/'>Система анализа экспертной оценки</Navbar.Brand>
-        {user.isAuth ?
-          <Nav className="ml-auto">
-            <Nav.Link
-              onClick={() => logOut()}
-            >
-              Выйти
-            </Nav.Link>
-          </Nav>
-          :
-          <Nav className="ml-auto">
-            <Nav.Link onClick={() => navigate('/login')}>Вход</Nav.Link>
-            <Nav.Link onClick={() => navigate('/registration')}>Регистрация</Nav.Link>
-
-          </Nav>
-        }
-      </Container>
+    <Navbar bg="dark" variant="dark" className="sidebar flex-column ">
+      <Navbar.Brand href="#" onClick={() => navigate('/')}>Система анализа экспертной оценки</Navbar.Brand>
+      <hr/>
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="flex-column ">
+          <Nav.Link className="nav-linkk" onClick={() => navigate('/events')}>Мероприятия</Nav.Link>
+          <hr className="hr-bar"/>
+          <Nav.Link className="nav-linkk" onClick={() => navigate('/results')}>Результаты</Nav.Link>
+          <hr className="hr-bar"/>
+          <Nav.Link className="nav-linkk" onClick={() => navigate('/votes')}>Голосование</Nav.Link>
+          <hr className="hr-bar"/>
+          <Nav.Link className="nav-linkk" onClick={() => {
+            logOut()
+            navigate('/registration')
+          }}>Выйти</Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
     </Navbar>
   )
 })

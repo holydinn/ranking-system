@@ -27,8 +27,8 @@ class AdminController {
       }
       const hashPassword = await bcrypt.hash(password, 7);
       const admin = await Admin.create({email, password: hashPassword})
-      await admin.save()
-      return res.status(201).json({message: "Пользователь успешно зарегистрирован"})
+      const token = generateJwt(admin.id, admin.email)
+      return res.status(201).json({token,message: "Пользователь успешно зарегистрирован"})
     } catch (e) {
       //next(ApiError.internal("Registration error"))
       res.status(500).json({message: 'Registration error'})
@@ -57,6 +57,10 @@ class AdminController {
       console.log(e)
       res.status(500).json({message: 'Login error'})
     }
+  }
+  async check(req, res) {
+    const token = generateJwt(req.user.id, req.user.email, req.user.role)
+    return res.json({token})
   }
 }
 

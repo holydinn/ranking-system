@@ -10,18 +10,16 @@ const Admin = sequelize.define('admin', {
 const Event = sequelize.define('event', {
   id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
   name: {type: DataTypes.STRING, unique: true, allowNull: false}
-  // alt_num: {type: DataTypes.INTEGER, allowNull: false},
-  // exp_num: {type: DataTypes.INTEGER, allowNull: false}
 })
 
 const Alternative = sequelize.define('alternative', {
   id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-  name: {type: DataTypes.STRING, unique: true, allowNull: false}
+  name: {type: DataTypes.STRING, allowNull: false}
 })
 
 const Expert = sequelize.define('expert', {
   id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-  name: {type: DataTypes.STRING, unique: true, allowNull: false},
+  name: {type: DataTypes.STRING, allowNull: false},
   ranking: {type: DataTypes.STRING},
   link: {type: DataTypes.STRING, unique: true}
 })
