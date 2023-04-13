@@ -9,12 +9,14 @@ const Events = observer(() => {
   const navigate = useNavigate()
   const {event} = useContext(Context)
   const {user} = useContext(Context)
+
   useEffect(() => {
     fetchEvents(user.user.id).then(data => {
       event.setEvents(data)
     })
-  }, [event])
-  console.log(event)
+  }, [])
+
+  //console.log(event.events)
   return (
     <div>
       <Navbar className='mt-3'>
@@ -27,15 +29,15 @@ const Events = observer(() => {
         </Container>
       </Navbar>
 
-      <ListGroup className="mt-3 fs-6" >
-        {event.events.map(event =>
+      <ListGroup className="mt-3 fs-6 mb-3" >
+        {event.events.map(e =>
           <ListGroup.Item
-            key={event.id}
-            onClick={() => navigate('/events/' + event.id)}
+            key={e.id}
+            onClick={() => navigate('/events/' + e.id)}
             style={{cursor: 'pointer'}}
             className="pt-3 pb-3 link-dark"
           >
-            {event.name}
+            {e.name}
           </ListGroup.Item>
         )}
       </ListGroup>

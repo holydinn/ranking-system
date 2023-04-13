@@ -15,7 +15,8 @@ class AlternativeController {
 
   async getAll(req, res) {
     try {
-      const alts = await Alternative.findAll({where: {eventId:req.body.eventId}})
+      let {eventId} = req.query
+      const alts = await Alternative.findAll({where: {eventId}})
       return res.json(alts)
 
     } catch (e) {
@@ -25,8 +26,8 @@ class AlternativeController {
 
   async getOne(req, res) {
     try {
-      //const {id} = req.params
-      const alt = await Alternative.findOne({where:{id:req.params.id, eventId:req.body.eventId}})
+      const {id} = req.params
+      const alt = await Alternative.findOne({where:{id}})
       return res.json(alt)
     } catch (e) {
       res.status(500).json({message: 'Что-то пошло не так'})

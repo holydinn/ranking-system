@@ -8,7 +8,7 @@ class ExpertController {
       const expert = await Expert.create({name, eventId})
         .then((expert)=>{
           const savedId=expert.id
-          expert.update({link:`localhost:5000/api/vote/${savedId}`})
+          expert.update({link:`http://localhost:3000/votes/${savedId}`})
         })
 
       return res.json(expert)
@@ -20,7 +20,8 @@ class ExpertController {
 
   async getAll(req, res) {
     try {
-      const experts = await Expert.findAll({where: {eventId:req.body.eventId}})
+      let {eventId} = req.query
+      const experts = await Expert.findAll({where: {eventId}})
       return res.json(experts)
 
     } catch (e) {
