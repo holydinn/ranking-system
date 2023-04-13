@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Breadcrumb, Button, Col, Container, Form, ListGroup, Modal, Navbar, Row} from "react-bootstrap";
+import {Breadcrumb,  Col, Container, Navbar, Row} from "react-bootstrap";
 //import {useNavigate} from "react-router-dom";
 // import {Context} from "../../index.js";
 // import {fetchAlternatives, fetchExperts} from "../../http/eventAPI.js";
@@ -9,7 +9,7 @@ import {fetchAlternatives, fetchExperts, fetchOneEvent} from "../../http/eventAP
 import {useContext} from "react";
 import {Context} from "../../index.js";
 
-const EventPage = observer(({show, onHide}) => {
+const EventPage = observer(() => {
   const navigate = useNavigate()
   const {user} = useContext(Context)
   const {event} = useContext(Context)
@@ -40,7 +40,7 @@ const EventPage = observer(({show, onHide}) => {
       <Container className="mt-3">
         <Col className="mt-3 fs-6">
           <Row className="mb-2"><h4 style={{color:'#495057'}}>Эксперты</h4></Row>
-          <Row className="mb-3" style={{fontWeight:'bold'}}v>
+          <Row className="mb-3" style={{fontWeight:'bold'}}>
             <Col sm="1"><h7  >Номер</h7></Col>
             <Col sm="3"><h7>ФИО</h7></Col>
             <Col sm="4"><h7>Ссылка для голосования</h7></Col>
@@ -56,7 +56,7 @@ const EventPage = observer(({show, onHide}) => {
         <hr/>
         <Col className="mt-3 fs-6">
           <Row className="mb-2"><h4 style={{color:'#495057'}}>Участники</h4></Row>
-          <Row className="mb-3" style={{fontWeight:'bold'}}v>
+          <Row className="mb-3" style={{fontWeight:'bold'}}>
             <Col sm="1"><h7  >Номер</h7></Col>
             <Col sm="3"><h7>ФИО</h7></Col>
           </Row>
