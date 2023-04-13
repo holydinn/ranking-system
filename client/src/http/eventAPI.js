@@ -6,16 +6,20 @@ export const createEvent = async (event) => {
 }
 
 export const fetchEvents = async (adminId) => {
-  const {data} = await $authHost.get('api/event',{params:{
-    adminId
-    }})
+  const {data} = await $authHost.get('api/event', {
+    params: {
+      adminId
+    }
+  })
   return data
 }
 
-export const fetchOneEvent = async (adminId,id) => {
-  const {data} = await $authHost.get('api/event/' +id,{params:{
+export const fetchOneEvent = async (adminId, id) => {
+  const {data} = await $authHost.get('api/event/' + id, {
+    params: {
       adminId
-    }})
+    }
+  })
 
   return data
 }
@@ -24,8 +28,8 @@ export const createExpert = async (expert) => {
   return data
 }
 
-export const fetchExperts = async () => {
-  const {data} = await $authHost.get('api/expert')
+export const fetchExperts = async (eventId) => {
+  const {data} = await $authHost.get('api/expert', {params: {eventId}})
   return data
 }
 export const createAlternative = async (alternative) => {
@@ -33,7 +37,7 @@ export const createAlternative = async (alternative) => {
   return data
 }
 
-export const fetchAlternatives = async () => {
-  const {data} = await $authHost.get('api/alternative')
+export const fetchAlternatives = async (eventId) => {
+  const {data} = await $authHost.get('api/alternative', {params: {eventId}})
   return data
 }

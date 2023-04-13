@@ -7,7 +7,7 @@ import {Context} from "./index.js";
 import {observer} from "mobx-react-lite";
 import Events from "./pages/Event/Events.js";
 import CreateEventPage from "./pages/Event/CreateEventPage.js";
-import EventModal from "./pages/Event/EventModal.js";
+import EventPage from "./pages/Event/EventPage.js";
 import Results from "./pages/Result/Results.js";
 import ResultPage from "./pages/Result/ResultPage.js";
 import Votes from "./pages/Vote/Votes.js";
@@ -25,7 +25,7 @@ const AppRouter = observer(() => {
               <Route index element={<Main/>}/>
               <Route path="events">
                 <Route index element={<Events/>}/>
-                <Route path=":id" element={<EventModal/>}/>
+                <Route path=":id" element={<EventPage/>}/>
                 <Route path="new" element={<CreateEventPage/>}/>
               </Route>
               <Route path="results">
