@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Breadcrumb,  Col, Container, Navbar, Row} from "react-bootstrap";
-//import {useNavigate} from "react-router-dom";
-// import {Context} from "../../index.js";
-// import {fetchAlternatives, fetchExperts} from "../../http/eventAPI.js";
 import {observer} from "mobx-react-lite";
 import {useNavigate, useParams} from "react-router-dom";
 import {fetchAlternatives, fetchExperts, fetchOneEvent} from "../../http/eventAPI.js";
@@ -15,8 +12,6 @@ const EventPage = observer(() => {
   const {event} = useContext(Context)
   const {id} = useParams()
   const [eventName, setEventName] = useState('')
-  // const [experts, setExperts] = useState('')
-  // const [alts, setAlts] = useState('')
   useEffect(() => {
     fetchOneEvent(user.user.id, id).then(data => setEventName(data))
     fetchExperts(eventName.id).then(data => event.setExperts(data))
