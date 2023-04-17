@@ -1,7 +1,7 @@
 import jStat from "jstat";
 import _ from "lodash";
 
-import {experts, alternatives} from "../context.js";
+//import {experts, alternatives} from "./context.js";
 
 // export const transposeMatrix=(matrix)=> {
 //   matrix = matrix[0].map((column, index) => matrix
@@ -9,14 +9,14 @@ import {experts, alternatives} from "../context.js";
 //   return matrix
 // }
 
-export const createExpert1 = (name, points) => {
-  experts.push({name: name, index: experts.length + 1, points: points})
-};
+// export const createExpert1 = (name, points) => {
+//   experts.push({name: name, index: experts.length + 1, points: points})
+// };
 export const createExpert = (name, points,exps) => {
   exps.push({name: name, index: exps.length + 1, points: points})
 };
 
-export const createCompareMatrix = (rankMatrix) => {
+export const createCompareMatrix = (rankMatrix,alternatives) => {
   //матрица попарных сравнений альтернатив
   let comparisonMatrix = jStat.zeros(alternatives.length)
   let copyExpRank = []  // массив для обрабатываемой ранжировки
@@ -40,7 +40,7 @@ export const createCompareMatrix = (rankMatrix) => {
   return comparisonMatrix
 };
 
-export const sortByKey = (altsPoints) => {
+export const sortByKey = (altsPoints,alternatives) => {
   let temp, i
   let res = []
 
@@ -71,7 +71,7 @@ export const toNumber = (arr) => {
   return arr.map(value => +value)
 };
 
-export const createMatrixExpertRang = () => {
+export const createMatrixExpertRang = (experts,alternatives) => {
   let rankedMatrix = Array(alternatives.length).fill(0).map(() => Array(experts.length))
 
   for (let i = 0; i < experts.length; i++) {
@@ -84,7 +84,7 @@ export const createMatrixExpertRang = () => {
 };
 
 //создание матрицы отношений
-export const createRelationalMatrix = (matrix, key = '') => {
+export const createRelationalMatrix = (matrix, key ,alternatives) => {
   let expertRank = matrix.slice()
 
   let relMatrix = jStat.zeros(alternatives.length)
@@ -159,7 +159,7 @@ export const findMinDist = (distMatrix) => {
 };
 
 //Матрица потерь для новой медианы Кемени
-export const createLossMatrix = (matrixArray) => {
+export const createLossMatrix = (matrixArray,alternatives) => {
   let i, j
   let lossMatrix = jStat.zeros(alternatives.length)
 

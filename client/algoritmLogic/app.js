@@ -6,12 +6,12 @@ import {
   simpsonRule
 } from "./algorithms/rankingAlgoritms.js";
 import {oneDimensionalScaling} from "./algorithms/scalingAlgoritms.js"
-import {createExpert} from "./algorithms/helpFunctions.js";
+import {createExpert1} from "./algorithms/helpFunctions.js";
 
 
-createExpert('exp4', [3, 4, 5, 6, 1, 2])
-createExpert('exp5', [6, 1, 4, 5, 3, 2])
-createExpert('exp6', [6, 4, 3, 1, 2, 5])
+// createExpert1('exp4', [3, 4, 5, 6, 1, 2])
+// createExpert1('exp5', [6, 1, 4, 5, 3, 2])
+// createExpert1('exp6', [6, 4, 3, 1, 2, 5])
 
 
 const start = new Date().getTime();

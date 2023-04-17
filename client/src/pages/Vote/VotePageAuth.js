@@ -1,39 +1,36 @@
 import React from 'react';
-import {Breadcrumb, Button, Col, Container, Navbar, Row} from "react-bootstrap";
-import {useContext, useEffect, useState} from "react";
-import {
-  fetchAlternativesForVote, fetchEventByExpertId,
-  fetchOneExpertForVote, updateExpert
-} from "../../http/eventAPI.js";
-import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
+import {useContext, useEffect, useState} from "react";
+import {Context} from "../../index.js";
 import {useNavigate, useParams} from "react-router-dom";
+import {
+  fetchAlternatives,
+  fetchOneEvent, fetchOneExpert, updateExpertAuth
+} from "../../http/eventAPI.js";
+import {Breadcrumb, Button, Container, Navbar, Row} from "react-bootstrap";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import "../../index.css"
 
-const VotePage = observer(() => {
+const VotePageAuth = observer(() => {
   const {event} = useContext(Context)
+  const {user} = useContext(Context)
   const {id} = useParams()
   const navigate = useNavigate()
   const [expert, setExpert] = useState('')
   const [eventName, setEventName] = useState('')
-  const [alts, setAlts] = useState([])
+
   useEffect(() => {
-    fetchOneExpertForVote(id).then(data => setExpert(data))
-    fetchEventByExpertId(id).then(data => setEventName(data))
-    fetchAlternativesForVote(expert.eventId).then(data => {
-      const items = Array.from(data).map((item, index) => ({
-        id: `${index + 1}`,
-        name: item.name
-      }))
-      event.setAlternatives(items)
-      setAlts(event.alternatives)
-    })
+    fetchOneExpert(id).then(data => setExpert(data))
+    fetchOneEvent(user.user.id, expert.eventId).then(data => setEventName(data))
+    fetchAlternatives(expert.eventId).then(data => event.setAlternatives(data))
   }, [expert.id])
 
+  const items = Array.from(event.alternatives).map((item, index) => ({
+    id: `${index + 1}`,
+    name: item.name
+  }));
 
-  console.log(alts)
-
+  const [alts, setAlts] = useState(items)
 
   const onDragEnd = (result) => {
     if (!result.destination) {
@@ -43,6 +40,7 @@ const VotePage = observer(() => {
     const [reorderedItem] = newItems.splice(result.source.index, 1);
     newItems.splice(result.destination.index, 0, reorderedItem);
     setAlts(newItems);
+    console.log(alts)
   };
 
   const addRanking = async () => {
@@ -53,10 +51,11 @@ const VotePage = observer(() => {
     temp.forEach((value, index) => {
       ranking[value - 1] = index + 1
     })
-    await updateExpert(id, {ranking})
+    await updateExpertAuth(id, {ranking})
     console.log(ranking)
     await alert('Ваш голос отправлен!')
-    await navigate('/')
+    await navigate('/events/')
+
   }
 
   return (
@@ -107,4 +106,4 @@ const VotePage = observer(() => {
   );
 });
 
-export default VotePage;
+export default VotePageAuth;

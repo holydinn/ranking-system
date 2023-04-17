@@ -14,7 +14,7 @@ const Events = observer(() => {
     fetchEvents(user.user.id).then(data => {
       event.setEvents(data)
     })
-  }, [])
+  }, [event])
 
   //console.log(event.events)
   return (

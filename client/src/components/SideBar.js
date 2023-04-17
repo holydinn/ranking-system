@@ -23,8 +23,6 @@ const SideBar = observer(() => {
           <hr className="hr-bar"/>
           <Nav.Link className="nav-linkk" onClick={() => navigate('/results')}>Результаты</Nav.Link>
           <hr className="hr-bar"/>
-          <Nav.Link className="nav-linkk" onClick={() => navigate('/votes')}>Голосование</Nav.Link>
-          <hr className="hr-bar"/>
           <Nav.Link className="nav-linkk" onClick={() => {
             logOut()
             navigate('/registration')

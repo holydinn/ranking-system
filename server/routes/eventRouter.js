@@ -6,7 +6,8 @@ const auth = require('../middleware/authMiddleware.js')
 router.post('/', auth, eventController.create)
 router.get('/',  auth, eventController.getAll)
 router.get('/:id', auth, eventController.getOne)
-// router.delete('/:id', )
+router.get('/vote/:id',eventController.getByExpertId)
+router.delete('/:id',auth,eventController.deleteOne )
 // router.patch('/:id', )
 
 

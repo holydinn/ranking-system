@@ -1,19 +1,19 @@
-import {experts, alternatives} from "../context.js";
+//import {experts, alternatives} from "./context.js";
 import jStat from "jstat";
 import * as myF from "./helpFunctions.js";
+
+// const rankedMatrix = myF.createMatrixExpertRang()
 //
-const rankedMatrix = myF.createMatrixExpertRang()
-
-//транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
-const transRankedMatrix = jStat.transpose(rankedMatrix)
+// //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
+// const transRankedMatrix = jStat.transpose(rankedMatrix)
 
 
-export const oneDimensionalScaling = () => {
+export const oneDimensionalScaling = (alternatives,transRankedMatrix) => {
   let relMatrices = []  //массив матриц отношений
 
   //матрица предпочтений
   transRankedMatrix.forEach((exp, expIndex) => {
-    relMatrices[expIndex] = myF.createRelationalMatrix(exp, 'scale')
+    relMatrices[expIndex] = myF.createRelationalMatrix(exp, 'scale',alternatives)
   })
 
   //частотная матрица предпочтений (p-)
@@ -51,7 +51,7 @@ export const oneDimensionalScaling = () => {
     //indOfRelImportance[i]=+((averagePref[i]/averageInd).toFixed(2))
   }
 
-  let resRank = myF.sortByKey(indOfRelImportance)
+  let resRank = myF.sortByKey(indOfRelImportance,alternatives)
 
   let diffNormDev = jStat.zeros(alternatives.length)  //разности средних нормированных отклоннений (~zi-~zj)
   let frecPref = jStat.zeros(alternatives.length)  //частота предпочтений i перед j
@@ -75,8 +75,8 @@ export const oneDimensionalScaling = () => {
   // console.log('3 сигма: ', 3 * sigma)
 
   if (jStat.max(maxFrecs) < 3 * sigma) {
-    return {concl: "Экспертные оценки не противоречивы", resRank}
+    return {name: "Экспертные оценки не противоречивы", resRank}
   }
-  return {concl: "Экспертные оценки противоречивы"}
+  return {name: "Экспертные оценки противоречивы"}
 
 };

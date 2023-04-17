@@ -20,7 +20,7 @@ const Alternative = sequelize.define('alternative', {
 const Expert = sequelize.define('expert', {
   id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
   name: {type: DataTypes.STRING, allowNull: false},
-  ranking: {type: DataTypes.STRING},
+  ranking: {type: DataTypes.ARRAY(DataTypes.INTEGER)},
   link: {type: DataTypes.STRING, unique: true}
 })
 

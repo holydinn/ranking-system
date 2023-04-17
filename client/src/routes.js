@@ -12,6 +12,7 @@ import Results from "./pages/Result/Results.js";
 import ResultPage from "./pages/Result/ResultPage.js";
 import Votes from "./pages/Vote/Votes.js";
 import VotePage from "./pages/Vote/VotePage.js";
+import VotePageAuth from "./pages/Vote/VotePageAuth.js";
 
 
 const AppRouter = observer(() => {
@@ -32,10 +33,7 @@ const AppRouter = observer(() => {
                 <Route index element={<Results/>}/>
                 <Route path=":id" element={<ResultPage/>}/>
               </Route>
-              <Route path="votes">
-                <Route index element={<Votes/>}/>
-                <Route path=":id" element={<VotePage/>}/>
-              </Route>
+              <Route path="votes/:id" element={<VotePageAuth/>}/>
             </Route>
             <Route
               path="*"
@@ -45,11 +43,13 @@ const AppRouter = observer(() => {
         }
         {!user._isAuth &&
           <>
+            <Route path="/" element={<Main/>}/>
             <Route path="registration" element={<Auth/>}/>
             <Route path="login" element={<Auth/>}/>
+            <Route path="votes/:id" element={<VotePage/>}/>
             <Route
               path="*"
-              element={<Navigate to="/login" replace/>}
+              element={<Navigate to="/" replace/>}
             />
           </>
         }
