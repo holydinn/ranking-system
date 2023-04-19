@@ -12,7 +12,8 @@ class ExpertController {
       const expert = await Expert.create({name, eventId})
         .then((expert) => {
           const savedId = expert.id
-          expert.update({link: `http://localhost:3000/votes/${savedId}`})
+          //expert.update({link: `http://localhost:3000/votes/${savedId}`})
+          expert.update({link: `https://ranking-systemm.onrender.com/votes/${savedId}`})
         })
 
       return res.json(expert)
