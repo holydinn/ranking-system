@@ -30,7 +30,7 @@ export const relativeMajorityRule = (rankedMatrix) => {
     resRank[index] = myF.toNumber(temp)
   })
 
-  return {name: 'Правило относительного большинства', resRank}
+  return {name: ['Правило относительного большинства'], resRank}
 };
 
 //Победитель по Кондорсе
@@ -58,7 +58,7 @@ export const condorcetWinner = (alternatives,transRankedMatrix) => {
 
   resRank = myF.sortByKey(altsPoints,alternatives)
 
-  return {name: 'Победитель по Кондорсе', resRank}
+  return {name: ['Победитель по Кондорсе'], resRank}
 };
 
 //Правило Копленда
@@ -84,7 +84,7 @@ export const copelandRule = (alternatives,transRankedMatrix) => {
 
   resRank = myF.sortByKey(altsPoints,alternatives)
 
-  return {name: 'Правило Копленда', resRank}
+  return {name: ['Правило Копленда'], resRank}
 };
 
 //Правило Симпсона
@@ -104,7 +104,7 @@ export const simpsonRule = (alternatives,transRankedMatrix) => {
   }
   resRank = myF.sortByKey(altsPoints,alternatives)
 
-  return {name: 'Правило Симпсона', resRank}
+  return {name: ['Правило Симпсона'], resRank}
 };
 
 //Правило Борда
@@ -120,7 +120,7 @@ export const bordRule = (alternatives,transRankedMatrix) => {
 
   resRank = myF.sortByKey(altsPoints,alternatives)
 
-  return {name: 'Правило Борда>', resRank}
+  return {name: ['Правило Борда'], resRank}
 
 };
 
@@ -141,7 +141,7 @@ export const medianKemeny = (transRankedMatrix,alternatives) => {
 
   resRank = transRankedMatrix[indexMinDist]
 
-  return {name: 'Медиана Кемени', resRank}
+  return {name: ['Медиана Кемени'], resRank}
 };
 
 //Медиана Кемени в виде новой ранжировки
@@ -173,7 +173,7 @@ export const newMedianKemeny = (transRankedMatrix,alternatives) => {
 
   } while (indexArray.length > 0)
 
-  return {name: 'Медиана Кемени в виде новой ранжировки', resRank}
+  return {name: ['Медиана  Кемени в виде новой ранжировки'], resRank}
 };
 
 //Коэффициент конкордации

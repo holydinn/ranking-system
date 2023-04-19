@@ -8,7 +8,6 @@ import {observer} from "mobx-react-lite";
 
 const CreateEventPage = observer(() => {
   const navigate = useNavigate()
-  const {event} = useContext(Context)
   const {user} = useContext(Context)
   const [eventName, setEventName] = useState('')
   const [expert, setExpert] = useState(['']);
@@ -63,7 +62,7 @@ const CreateEventPage = observer(() => {
             type="text"
             value={alt[i]}
             onChange={(event) => handleAltChange(i, event)}
-            placeholder="Введите ФИО эксперта"
+            placeholder="Введите ФИО участника"
           />
         </Col>
       </Form.Group>);
@@ -96,98 +95,89 @@ const CreateEventPage = observer(() => {
     } catch (e) {
       alert(e.message)
     }
-
   }
 
   const addEvent = async () => {
     try {
-
       const curEvent = await createEvent({name: eventName, adminId: user.user.id})
-
-      console.log(curEvent)
       await expert.forEach((input) => (createExpert({name: input, eventId: curEvent.id})))
-
       await alt.forEach((input) => (createAlternative({name: input, eventId: curEvent.id})))
-
       await alert('Мероприятие успешно добавлено!')
       await navigate('/events')
-
-
     } catch (e) {
       alert(e.response.data.message)
-
     }
-
-
-    //navigate('/events')
   }
 
-  return (<Form>
-    <Navbar className='mt-3'>
-      <Container fluid>
+  return (
+    <Container>
+
+      <Navbar className='mt-3'>
+
         <Breadcrumb className="mt-lg-2 fs-2">
           <Breadcrumb.Item onClick={() => navigate('/events')}>Мероприятия</Breadcrumb.Item>
           <Breadcrumb.Item style={{color: '#495057'}} active>Создать мероприятие</Breadcrumb.Item>
         </Breadcrumb>
 
-      </Container>
-    </Navbar>
-    <Form>
-      <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm="2">
-          Название
-        </Form.Label>
-        <Col sm="7">
-          <Form.Control
-            required
-            value={eventName}
-            onChange={e => setEventName(e.target.value)}
-            placeholder="Введите название мероприятия"
-          />
-        </Col>
-      </Form.Group>
+      </Navbar>
 
-      <hr/>
-      <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm="2">
-          Количество экспертов
-        </Form.Label>
-        <Col sm="7">
-          <Form.Control
-            type="number"
-            onChange={(e) => setNumExperts(parseInt(e.target.value))}
-            required
-            placeholder="Введите количество экспертов"
-          />
-        </Col>
-      </Form.Group>
-      {createExperts()}
-      <hr/>
-      <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm="2">
-          Количество участников
-        </Form.Label>
-        <Col sm="7">
-          <Form.Control
-            type="number"
-            onChange={(e) => setNumAlts(parseInt(e.target.value))}
-            required
-            placeholder="Введите количество участников"
-          />
-        </Col>
-      </Form.Group>
-      {createAlts()}
-      <Button className="mt-3"
-              size="lg"
-              variant={"outline-secondary"}
-              onClick={checkInputs}
-      >
-        Добавить мероприятие
-      </Button>
+      <Form>
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">
+            Название
+          </Form.Label>
+          <Col sm="7">
+            <Form.Control
+              required
+              value={eventName}
+              onChange={e => setEventName(e.target.value)}
+              placeholder="Введите название мероприятия"
+            />
+          </Col>
+        </Form.Group>
 
-    </Form>
+        <hr/>
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">
+            Количество экспертов
+          </Form.Label>
+          <Col sm="7">
+            <Form.Control
+              type="number"
+              onChange={(e) => setNumExperts(parseInt(e.target.value))}
+              required
+              placeholder="Введите количество экспертов"
+            />
+          </Col>
+        </Form.Group>
+        {createExperts()}
+        <hr/>
+        <Form.Group as={Row} className="mb-3">
+          <Form.Label column sm="2">
+            Количество участников
+          </Form.Label>
+          <Col sm="7">
+            <Form.Control
+              type="number"
+              onChange={(e) => setNumAlts(parseInt(e.target.value))}
+              required
+              placeholder="Введите количество участников"
+            />
+          </Col>
+        </Form.Group>
+        {createAlts()}
+        <Button className="mt-3"
+                size="lg"
+                variant={"outline-secondary"}
+                onClick={checkInputs}
+        >
+          Добавить мероприятие
+        </Button>
+      </Form>
 
-  </Form>);
+
+    </Container>
+  );
 });
 
 export default CreateEventPage;

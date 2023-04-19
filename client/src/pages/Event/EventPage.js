@@ -51,16 +51,14 @@ const EventPage = observer(() => {
   ;
 
   return (
-    <div>
-      <Navbar className='mt-3'>
-        <Container fluid>
-          <Breadcrumb className="mt-lg-2 fs-2">
-            <Breadcrumb.Item onClick={() => navigate('/events')}>Мероприятия</Breadcrumb.Item>
-            <Breadcrumb.Item style={{color: '#495057'}} active>{eventName.name}</Breadcrumb.Item>
-          </Breadcrumb>
-          <Button size="lg" variant="outline-secondary" onClick={deleteEvent}>Удалить
-            мероприятие</Button>
-        </Container>
+    <Container>
+      <Navbar className='mt-3 d-flex justify-content-between'>
+        <Breadcrumb className="mt-lg-2 fs-2">
+          <Breadcrumb.Item onClick={() => navigate('/events')}>Мероприятия</Breadcrumb.Item>
+          <Breadcrumb.Item style={{color: '#495057'}} active>{eventName.name}</Breadcrumb.Item>
+        </Breadcrumb>
+        <Button size="lg" variant="outline-secondary" onClick={deleteEvent}>Удалить
+          мероприятие</Button>
       </Navbar>
 
       <Container className="mt-3">
@@ -96,9 +94,8 @@ const EventPage = observer(() => {
               <Col sm="2">
                 <QrCode
                   value={item.link}
-                  size={100}
+                  size={80}
                   level="M"
-                  includeMargin
                 />
               </Col>
               <Col sm="1">
@@ -131,7 +128,7 @@ const EventPage = observer(() => {
 
       </Container>
 
-    </div>
+    </Container>
   )
     ;
 });

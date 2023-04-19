@@ -1,114 +1,130 @@
 import React from 'react';
-import {Breadcrumb, Button, Col, Container, Navbar, Row, Spinner} from "react-bootstrap";
+import {Alert, Breadcrumb, Col, Container, Navbar, Row, Spinner} from "react-bootstrap";
 import {useEffect} from "react";
 import {fetchAlternatives, fetchExperts, fetchOneEvent} from "../../http/eventAPI.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {useContext, useState} from "react";
 import {Context} from "../../index.js";
 import {observer} from "mobx-react-lite";
-import {doAlgoritms} from "../../algoritmLogic/app.js";
-import {createExpert} from "../../algoritmLogic/helpFunctions.js";
-import {check} from "../../http/userAPI.js";
+import {concordanceCoef, doAlgoritms} from "../../algoritmLogic/app.js";
 
 const ResultPage = observer(() => {
   const navigate = useNavigate()
   const {user} = useContext(Context)
-  const {event} = useContext(Context)
   const {id} = useParams()
   const [eventName, setEventName] = useState('')
   const [loading, setLoading] = useState(true)
   const [experts, setExperts] = useState([])
   const [alternatives, setAlternatives] = useState([])
   const [result, setResult] = useState([])
-  //let temp = []
+  const [cof, setCof] = useState('')
 
   useEffect(() => {
-    setTimeout(()=>{
-      fetchOneEvent(user.user.id, id).then(data => {
+
+    fetchOneEvent(user.user.id, id)
+      .then(data => {
         setEventName(data)
         fetchExperts(data.id).then(data => {
-          console.log(data)
           setExperts(data)
-          //temp = makeExperts(experts, temp)
-          //console.log(data)
+          let newExperts = []
+          for (let i = 0; i < data.length; i++) {
+            let ranking = data[i].ranking.slice(2, -2).split('","').map(Number)
+            newExperts.push({name: data[i].name, points: ranking})
+          }
+          setExperts(newExperts)
         })
         fetchAlternatives(data.id).then(data => {
-          console.log(data)
           setAlternatives(data.map(item => item.name))
         })
       })
-
-        .finally(() => setLoading(false))
-    },5000)
-
   }, [])
 
-  const makeExperts = (experts, newExperts) => {
-    //let newExperts = []
-    const items = Array.from(experts).map(item => (item.ranking));
-
-    for (let i = 0; i < items.length; i++) {
-      let ranking = []
-      let temp = items[i].slice(2, -2).split('","').map(Number)
-      temp.forEach((value, index) => {
-        ranking[value - 1] = index + 1
+  useEffect(() => {
+    doAlgoritms(experts, alternatives)
+      .then(data => {
+        setResult(data)
+        setCof(concordanceCoef(experts, alternatives))
       })
-      console.log(ranking)
-      createExpert(event.experts[i].name, ranking, newExperts)
-    }
-    console.log(newExperts)
-    return newExperts
-  }
-  const app = () => {
-    setResult(doAlgoritms(experts, alternatives))
-    console.log(result)
-  }
-  app()
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [experts, alternatives])
+
+  // useEffect(() => {
+  //   concordanceCoef(experts, alternatives)
+  //     .then(data => setCof(data))
+  //     .finally(() => {
+  //       setLoading(false)
+  //     })
+  // }, [experts, alternatives])
 
   if (loading) {
     return <Spinner animation={"grow"}/>
   }
+
   console.log(eventName)
   console.log(alternatives)
   console.log(experts)
-  //console.log(temp)
+  //console.log(result)
+  console.log(cof)
 
-  //console.log(experts)
-  //alternatives = event.alternatives.map(item => item.name)
+  return (
+    <Container>
+      <Navbar className='mt-3'>
+        <Breadcrumb className="mt-lg-2 fs-2">
+          <Breadcrumb.Item onClick={() => navigate('/results')}>Результаты</Breadcrumb.Item>
+          <Breadcrumb.Item style={{color: '#495057'}} active>{eventName.name}</Breadcrumb.Item>
+        </Breadcrumb>
+      </Navbar>
+      <Alert variant="info" className="mb-3">
+        <p>Коэффициент конкордации равен {cof}</p>
+        <hr/>
+        <p>Степень согласованности мнений экспертов определяется при помощи коэффицента конкордации,
+          который принимает значение, равное 1 при полной согласованности ответов экспертов,
+          и 0 при полной несогласованности</p>
+      </Alert>
+      <Row className="mb-3 fs-5" style={{fontWeight: 'bold'}}>
+        <Col sm="4">
+          Название метода
+        </Col>
+        <Col sm="8">
+          Результирующая ранжировка
+        </Col>
+      </Row>
+      {!loading && result.map(item =>
+        <>
+          <Row className="mb-3 align-items-center">
+            <Col sm="4" >
+              {item.name.map(item =>
+                <Row className="m-lg-1 mt-3">{item}</Row>
+              )}
+            </Col>
+            <Col sm="8">
+              {!item.resRank
+                ? <></>
+                : <ol>
+                  {item.resRank.map(item =>
+                    <Row className="mt-2">
+                      <li>
+                        {item.length === 1 && alternatives[item - 1]}
+                        {!item.length && alternatives[parseInt(item) - 1]}
+                        <ul className="list-unstyled">
+                          {item.length > 1 && item.map(value =>
+                            <li>{alternatives[value - 1]} </li>
+                          )}
+                        </ul>
+                      </li>
+                    </Row>
+                  )}
+                </ol>}
 
-   console.log(result)
+            </Col>
+          </Row>
+          <hr/>
+        </>
+      )}
 
-
-  return (<Container>
-    <Navbar className='mt-3'>
-      <Breadcrumb className="mt-lg-2 fs-2">
-        <Breadcrumb.Item onClick={() => navigate('/results')}>Результаты</Breadcrumb.Item>
-        <Breadcrumb.Item style={{color: '#495057'}} active>{eventName.name}</Breadcrumb.Item>
-      </Breadcrumb>
-    </Navbar>
-    <Col className="mt-3 fs-6">
-      {!loading && experts.map((item, index) =>
-        <Row className="mb-3  align-items-center">
-          <Col sm="1">{index + 1}.</Col>
-          <Col sm="3">
-            <h7>{item.name}</h7>
-          </Col>
-          <Col sm="3">
-            <h7>{item.ranking}</h7>
-          </Col>
-        </Row>)}
-    </Col>
-    {/*{!loading && result.map((item, index) => <Row className="mb-3  align-items-center">*/}
-    {/*  <Col sm="1">{index + 1}.</Col>*/}
-    {/*  <Col sm="3">*/}
-    {/*    <h7>{item.name}</h7>*/}
-    {/*  </Col>*/}
-    {/*  <Col sm="3">*/}
-    {/*    <h7>{item.resRank}</h7>*/}
-    {/*  </Col>*/}
-    {/*</Row>)}*/}
-
-  </Container>);
+    </Container>);
 });
 
 export default ResultPage;

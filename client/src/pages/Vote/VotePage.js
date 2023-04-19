@@ -1,5 +1,5 @@
 import React from 'react';
-import {Breadcrumb, Button, Col, Container, Navbar, Row} from "react-bootstrap";
+import {Breadcrumb, Button,  Container, Navbar, Row} from "react-bootstrap";
 import {useContext, useEffect, useState} from "react";
 import {
   fetchAlternativesForVote, fetchEventByExpertId,
@@ -86,7 +86,7 @@ const VotePage = observer(() => {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                     >
-                      {item.name}
+                      (№{item.id}) {item.name}
                     </li>
                   )}
                 </Draggable>

@@ -18,14 +18,11 @@ const Results = observer(() => {
   }, [event])
 
   return (
-    <div>
+    <Container>
       <Navbar className='mt-3'>
-        <Container fluid className='d-flex'>
-          <Breadcrumb className="mt-lg-2 fs-2">
-            <Breadcrumb.Item active>Результаты</Breadcrumb.Item>
-          </Breadcrumb>
-
-        </Container>
+        <Breadcrumb className="mt-lg-2 fs-2">
+          <Breadcrumb.Item active>Результаты</Breadcrumb.Item>
+        </Breadcrumb>
       </Navbar>
       <ListGroup className="mt-3 fs-6 mb-3">
         {event.events.map(e =>
@@ -39,7 +36,7 @@ const Results = observer(() => {
           </ListGroup.Item>
         )}
       </ListGroup>
-    </div>
+    </Container>
   );
 });
 

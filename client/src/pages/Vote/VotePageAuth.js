@@ -85,7 +85,7 @@ const VotePageAuth = observer(() => {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                     >
-                      {item.name}
+                      (№{item.id}) {item.name}
                     </li>
                   )}
                 </Draggable>

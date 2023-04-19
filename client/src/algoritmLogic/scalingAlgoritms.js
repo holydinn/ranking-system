@@ -75,8 +75,8 @@ export const oneDimensionalScaling = (alternatives,transRankedMatrix) => {
   // console.log('3 сигма: ', 3 * sigma)
 
   if (jStat.max(maxFrecs) < 3 * sigma) {
-    return {name: "Экспертные оценки не противоречивы", resRank}
+    return {name: ["Согласно модели Терстоуна экспертные оценки не противоречивы"], resRank}
   }
-  return {name: "Экспертные оценки противоречивы"}
+  return {name: ["Согласно модели Терстоуна экспертные оценки противоречивы"]}
 
 };

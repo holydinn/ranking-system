@@ -16,17 +16,14 @@ const Events = observer(() => {
     })
   }, [event])
 
-  //console.log(event.events)
   return (
-    <div>
-      <Navbar className='mt-3'>
-        <Container fluid className='d-flex justify-content-between'>
+    <Container>
+      <Navbar className='mt-3 d-flex justify-content-between'>
           <Breadcrumb className="mt-lg-2 fs-2">
             <Breadcrumb.Item active>Мероприятия</Breadcrumb.Item>
           </Breadcrumb>
           <Button size="lg" variant="outline-secondary" onClick={() => navigate('/events/new')}>Добавить
             мероприятие</Button>
-        </Container>
       </Navbar>
 
       <ListGroup className="mt-3 fs-6 mb-3" >
@@ -42,7 +39,7 @@ const Events = observer(() => {
         )}
       </ListGroup>
 
-    </div>
+    </Container>
   );
 });
 
