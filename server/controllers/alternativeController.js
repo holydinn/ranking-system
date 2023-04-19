@@ -1,4 +1,4 @@
-const {Alternative,} = require('../models/models')
+const {Alternative} = require('../models/models')
 
 class AlternativeController {
 

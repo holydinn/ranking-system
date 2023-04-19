@@ -4,7 +4,6 @@ import {useContext} from "react";
 import {Context} from "../index.js";
 import {observer} from "mobx-react-lite";
 
-
 const Main = observer(() => {
   const {user} = useContext(Context)
   return (

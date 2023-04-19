@@ -8,7 +8,6 @@ router.get('/',  auth, eventController.getAll)
 router.get('/:id', auth, eventController.getOne)
 router.get('/vote/:id',eventController.getByExpertId)
 router.delete('/:id',auth,eventController.deleteOne )
-// router.patch('/:id', )
 
 
 module.exports = router

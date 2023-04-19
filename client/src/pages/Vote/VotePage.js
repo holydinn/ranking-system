@@ -31,10 +31,6 @@ const VotePage = observer(() => {
     })
   }, [expert.id])
 
-
-  console.log(alts)
-
-
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;

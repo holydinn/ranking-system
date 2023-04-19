@@ -15,7 +15,6 @@ class VoteController {
 
   async getOne(req, res) {
     try {
-      //const {id} = req.params
       const expert = await Expert.findOne({where:{id:req.params.expertId}})
       return res.json(expert)
     } catch (e) {

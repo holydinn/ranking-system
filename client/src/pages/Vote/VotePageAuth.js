@@ -40,19 +40,15 @@ const VotePageAuth = observer(() => {
     const [reorderedItem] = newItems.splice(result.source.index, 1);
     newItems.splice(result.destination.index, 0, reorderedItem);
     setAlts(newItems);
-    console.log(alts)
   };
 
   const addRanking = async () => {
-    console.log(alts)
     const temp = Array.from(alts).map(item => parseInt(item.id))
-    console.log(temp)
     let ranking = []
     temp.forEach((value, index) => {
       ranking[value - 1] = index + 1
     })
     await updateExpertAuth(id, {ranking})
-    console.log(ranking)
     await alert('Ваш голос отправлен!')
     await navigate('/events/')
 

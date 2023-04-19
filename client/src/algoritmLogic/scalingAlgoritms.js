@@ -1,12 +1,5 @@
-//import {experts, alternatives} from "./context.js";
 import jStat from "jstat";
 import * as myF from "./helpFunctions.js";
-
-// const rankedMatrix = myF.createMatrixExpertRang()
-//
-// //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
-// const transRankedMatrix = jStat.transpose(rankedMatrix)
-
 
 export const oneDimensionalScaling = (alternatives,transRankedMatrix) => {
   let relMatrices = []  //массив матриц отношений
@@ -33,14 +26,12 @@ export const oneDimensionalScaling = (alternatives,transRankedMatrix) => {
   //среднее значение нормированных отклонений (z~)
   let averageNormDev = []
   normDevMatrix.forEach((row, rowIndex) => {
-    //averageNormDev[rowIndex] = +((jStat.sum(row) / row.length).toFixed(2))
     averageNormDev[rowIndex] = jStat.sum(row) / row.length
   })
 
   // среднее значение частотных предпочтнений (p~)
   let averagePref = []
   for (let i = 0; i < averageNormDev.length; i++) {
-    //averagePref[i] = +((jStat.normal.cdf(averageNormDev[i], 0, 1)).toFixed(2))
     averagePref[i] = jStat.normal.cdf(averageNormDev[i], 0, 1)
   }
 
@@ -48,7 +39,6 @@ export const oneDimensionalScaling = (alternatives,transRankedMatrix) => {
   let averageInd = jStat.sum(averagePref)
   for (let i = 0; i < averagePref.length; i++) {
     indOfRelImportance[i] = averagePref[i] / averageInd
-    //indOfRelImportance[i]=+((averagePref[i]/averageInd).toFixed(2))
   }
 
   let resRank = myF.sortByKey(indOfRelImportance,alternatives)

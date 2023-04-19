@@ -35,7 +35,6 @@ class ExpertController {
 
   async getOne(req, res) {
     try {
-      //const {id} = req.params
       const expert = await Expert.findOne({where: {id: req.params.id}})
       return res.json(expert)
     } catch (e) {

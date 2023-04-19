@@ -1,7 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {Button, Card, Container, Form, Nav} from "react-bootstrap";
 import {useLocation, useNavigate,} from "react-router-dom";
-// import {} from "react";
 import {Context} from "../index.js";
 import {login, registration} from "../http/userAPI.js";
 import {observer} from "mobx-react-lite";

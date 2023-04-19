@@ -16,13 +16,11 @@ class AdminController {
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
-        //next(ApiError.badRequest("Ошибка при регистрации"))
         return res.status(400).json({message: "Ошибка при регистрации", errors})
       }
       const {email, password} = req.body;
       const candidate = await Admin.findOne({where:{email}})
       if (candidate) {
-        //return next(ApiError.badRequest("Пользователь с таким именем уже существует"))
         return res.status(400).json({message: "Пользователь с таким email уже существует"})
       }
       const hashPassword = await bcrypt.hash(password, 7);
@@ -30,7 +28,6 @@ class AdminController {
       const token = generateJwt(admin.id, admin.email)
       return res.status(201).json({token,message: "Пользователь успешно зарегистрирован"})
     } catch (e) {
-      //next(ApiError.internal("Registration error"))
       res.status(500).json({message: 'Registration error'})
     }
   }
@@ -39,7 +36,6 @@ class AdminController {
     try {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
-        //next(ApiError.badRequest("Ошибка при регистрации"))
         return res.status(400).json({message: "Введены некорректные данные", errors})
       }
       const {email, password} = req.body

@@ -50,23 +50,9 @@ const ResultPage = observer(() => {
       })
   }, [experts, alternatives])
 
-  // useEffect(() => {
-  //   concordanceCoef(experts, alternatives)
-  //     .then(data => setCof(data))
-  //     .finally(() => {
-  //       setLoading(false)
-  //     })
-  // }, [experts, alternatives])
-
   if (loading) {
     return <Spinner animation={"grow"}/>
   }
-
-  console.log(eventName)
-  console.log(alternatives)
-  console.log(experts)
-  //console.log(result)
-  console.log(cof)
 
   return (
     <Container>

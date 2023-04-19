@@ -73,7 +73,6 @@ const CreateEventPage = observer(() => {
   const checkInputs = () => {
     try {
       if (!eventName || eventName === '') {
-        //alert('Вы не ввели название мероприятия!')
         throw new SyntaxError('Вы не ввели название мероприятия!')
       }
       console.log(expert)
@@ -81,13 +80,11 @@ const CreateEventPage = observer(() => {
       console.log(numExperts)
       expert.forEach((input) => {
         if (!input || input === '' || expert.length !== numExperts) {
-          //alert('Вы не все имена экспертов!')
           throw new SyntaxError('Вы ввели не все имена экспертов!')
         }
       })
       alt.forEach((input) => {
         if (!input || input === '' || alt.length !== numAlts) {
-          //alert('Вы не все имена участников!')
           throw new SyntaxError('Вы ввели не все имена участников!')
         }
       })

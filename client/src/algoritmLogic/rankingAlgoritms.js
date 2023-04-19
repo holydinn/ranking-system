@@ -1,13 +1,6 @@
-//import {alternatives, experts} from "./context.js";
 import * as myF from "./helpFunctions.js";
-//import jStat from "jstat";
 
 let resRank = []
-//матрица эксперт-ранг
-// const rankedMatrix = myF.createMatrixExpertRang()
-//
-// //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
-// const transRankedMatrix = jStat.transpose(rankedMatrix)
 
 //Правило относительного большинства
 export const relativeMajorityRule = (rankedMatrix) => {

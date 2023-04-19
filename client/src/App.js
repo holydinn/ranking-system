@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import AppRouter from "./routes.js";
 import NavBar from "./components/NavBar.js";
 import {useContext} from "react";
@@ -9,20 +9,11 @@ import './index.css'
 import {observer} from "mobx-react-lite";
 import {check} from "./http/userAPI.js";
 import {Spinner} from "react-bootstrap";
-import VotePage from "./pages/Vote/VotePage.js";
 
 const App = observer(() => {
-  // const {token, login, logout, userId, ready} = useAuth()
-  // const isAuthenticated = !!token
 
-  //const routes = AppRouter()
-  // if (!ready) {
-  //   return <Loader/>
-  // }
   const {user} = useContext(Context)
   const [loading, setLoading] = useState(true)
-  // const location = useLocation()
-  // const isVote = location.pathname === '/votes/:id'
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,9 +29,6 @@ const App = observer(() => {
     return <Spinner animation={"grow"}/>
   }
   return (
-    // <AuthContext.Provider value={{
-    //   token, login, logout, userId, isAuthenticated
-    // }}>
     <BrowserRouter>
       {user._isAuth &&
         <>
@@ -62,18 +50,8 @@ const App = observer(() => {
           </div>
         </>
       }
-      {/*{!user._isAuth && isVote &&*/}
-      {/*  <>*/}
-      {/*    <div className="container">*/}
-      {/*      <Routes>*/}
-      {/*        <Route path="votes/:id" element={<VotePage/>}/>*/}
-      {/*      </Routes>*/}
-      {/*    </div>*/}
-
-      {/*  </>*/}
-      {/*}*/}
     </BrowserRouter>
-    // </AuthContext.Provider>
+
   )
 })
 

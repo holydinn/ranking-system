@@ -1,17 +1,6 @@
 import jStat from "jstat";
 import _ from "lodash";
 
-//import {experts, alternatives} from "./context.js";
-
-// export const transposeMatrix=(matrix)=> {
-//   matrix = matrix[0].map((column, index) => matrix
-//     .map(row => row[index]))
-//   return matrix
-// }
-
-// export const createExpert1 = (name, points) => {
-//   experts.push({name: name, index: experts.length + 1, points: points})
-// };
 export const createExpert = (name, points,exps) => {
   exps.push({name: name, index: exps.length + 1, points: points})
 };
@@ -58,7 +47,6 @@ export const sortByKey = (altsPoints,alternatives) => {
   for (i = 0; i < keys.length; i++) {
     res[i] = temp[keys[i]]
   }
-  //console.log(typeof res[0])
   if (res.length === alternatives.length) {
     res = res.flat(1)
   }
@@ -201,7 +189,6 @@ export const findNormalInv = (x) => {
   } else if (x === 1) {
     res = 3.9
   } else {
-    //res = +((jStat.normal.inv(x, 0, 1)).toFixed(2))
     res = jStat.normal.inv(x, 0, 1)
   }
 
@@ -210,7 +197,6 @@ export const findNormalInv = (x) => {
 
 export const multiplyMatrix = (matrix, num) => {
   return jStat.map(matrix, function (x) {
-    //return +((x * num).toFixed(2))
     return x * num
   })
 

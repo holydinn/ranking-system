@@ -14,7 +14,6 @@ class ResultController {
 
   async getOne(req, res) {
     try {
-      //const {id} = req.params
       const event = await Event.findOne({where:{id:req.params.id, adminId: req.user.id}})
       return res.json(event)
     } catch (e) {
