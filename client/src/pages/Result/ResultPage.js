@@ -28,7 +28,7 @@ const ResultPage = observer(() => {
           setExperts(data)
           let newExperts = []
           for (let i = 0; i < data.length; i++) {
-            let ranking = data[i].ranking.slice(2, -2).split('","').map(Number)
+            let ranking = (data[i].ranking.slice(2, -2) + '').split('","').map(Number)
             newExperts.push({name: data[i].name, points: ranking})
           }
           setExperts(newExperts)
