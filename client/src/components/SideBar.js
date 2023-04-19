@@ -15,7 +15,7 @@ const SideBar = observer(() => {
   }
   return (
     <Navbar bg="dark" variant="dark" className="sidebar flex-column ">
-      <Navbar.Brand href="#" onClick={() => navigate('/')}>Система анализа экспертной оценки</Navbar.Brand>
+      <Navbar.Brand href="#" style={{cursor: 'pointer'}} onClick={() => navigate('/')}>Система анализа экспертной оценки</Navbar.Brand>
       <hr/>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="flex-column ">
@@ -25,7 +25,7 @@ const SideBar = observer(() => {
           <hr className="hr-bar"/>
           <Nav.Link className="nav-linkk" onClick={() => {
             logOut()
-            navigate('/registration')
+            navigate('/')
           }}>Выйти</Nav.Link>
         </Nav>
       </Navbar.Collapse>

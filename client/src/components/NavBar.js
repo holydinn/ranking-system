@@ -8,7 +8,7 @@ const NavBar = observer(() => {
   return (
     <Navbar bg="dark" variant="dark" sticky="top">
       <Container>
-        <Navbar.Brand onClick={() => navigate('/registration')}>Система анализа экспертной оценки</Navbar.Brand>
+        <Navbar.Brand style={{cursor: 'pointer'}} onClick={() => navigate('/')}>Система анализа экспертной оценки</Navbar.Brand>
         <Nav className="ml-auto">
           <Nav.Link onClick={() => navigate('/login')}>Вход</Nav.Link>
           <Nav.Link onClick={() => navigate('/registration')}>Регистрация</Nav.Link>
