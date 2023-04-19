@@ -61,43 +61,50 @@ const VotePageAuth = observer(() => {
           <Breadcrumb.Item style={{color: '#495057'}} active>{eventName.name}</Breadcrumb.Item>
         </Breadcrumb>
       </Navbar>
+      {expert.ranking &&
+        <Row className=" mt-2 ">
+          <h4> Вы уже проголосовали</h4>
+          <p className="fs-5 mt-2">Ожидайте результатов мериприятия!</p>
+        </Row>}
+      {!expert.ranking &&
+        <>
+          <Row className=" mt-2 "><h5>
+            Уважаемый(ая) {expert.name}!</h5>
+            <p className="fs-5">Для голосования разместите участников в порядке от
+              самого приоритетного до менее приоритетного. <br/> Затем нажмите на кнопку отправить</p>
+          </Row>
+          <Row className="mb-2"><h4>Участники</h4></Row>
 
-      <Row className=" mt-2 "><h5>
-        Уважаемый(ая) {expert.name}!</h5>
-        <p className="fs-5">Для голосования разместите участников в порядке от
-          самого приоритетного до менее приоритетного. <br/> Затем нажмите на кнопку отправить</p>
-      </Row>
-      <Row className="mb-2"><h4>Участники</h4></Row>
-
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="alts">
-          {(provided) => (
-            <ol className=" fs-5 vote-list" {...provided.droppableProps} ref={provided.innerRef}>
-              {alts.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided) => (
-                    <li className=""
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                    >
-                      (№{item.id}) {item.name}
-                    </li>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </ol>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <Button className="mt-3"
-              size="lg"
-              variant={"outline-secondary"}
-              onClick={addRanking}
-      >
-        Отправить
-      </Button>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="alts">
+              {(provided) => (
+                <ol className=" fs-5 vote-list" {...provided.droppableProps} ref={provided.innerRef}>
+                  {alts.map((item, index) => (
+                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                      {(provided) => (
+                        <li className=""
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                        >
+                          (№{item.id}) {item.name}
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ol>
+              )}
+            </Droppable>
+          </DragDropContext>
+          <Button className="mt-3"
+                  size="lg"
+                  variant={"outline-secondary"}
+                  onClick={addRanking}
+          >
+            Отправить
+          </Button>
+        </>}
     </Container>
   );
 });

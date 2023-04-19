@@ -89,11 +89,11 @@ const EventPage = observer(() => {
               </Col>
               <Col sm="3">
                 <h7
-                  // onClick={() => navigate(`/votes/${item.id}`)}
-                  onClick={() => {
-                    logOut()
-                    navigate(`/votes/${item.id}`)
-                  }}
+                   onClick={() => navigate(`/votes/${item.id}`)}
+                  // onClick={() => {
+                  //   logOut()
+                  //   navigate(`/votes/${item.id}`)
+                  // }}
                   style={{cursor: 'pointer'}}
                   className="link-secondary"
                 >{item.link}</h7>
