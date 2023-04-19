@@ -63,12 +63,12 @@ console.log(experts)
           <Breadcrumb.Item style={{color: '#495057'}} active>{eventName.name}</Breadcrumb.Item>
         </Breadcrumb>
       </Navbar>
-      {experts.every(item=>item.points!==null) &&
+      {!experts.every(item=>item.ranking!==null) &&
       <Alert variant="dark" className="mb-3 fs-4 mt-3 d-flex justify-content-center">
         Результаты еще не подготовлены, ожидаем голоса всех экспертов
       </Alert>
       }
-      {experts.every(item=>item.points===null) &&
+      {experts.every(item=>item.ranking!==null) &&
         <>
         <Alert variant="info" className="mb-3">
           <p>Коэффициент конкордации равен {parseFloat(cof).toFixed(3)}</p>
