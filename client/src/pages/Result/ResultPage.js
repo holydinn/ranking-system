@@ -29,7 +29,8 @@ const ResultPage = observer(() => {
           let newExperts = []
           for (let i = 0; i < data.length; i++) {
             let ranking = (data[i].ranking.slice(2, -2) + '').split('","').map(Number)
-            newExperts.push({name: data[i].name, points: ranking})
+            //newExperts.push({name: data[i].name, points: ranking})
+            newExperts.push({name: data[i].name, points: data[i].ranking})
           }
           setExperts(newExperts)
         })
@@ -53,7 +54,7 @@ const ResultPage = observer(() => {
   if (loading) {
     return <Spinner animation={"grow"}/>
   }
-
+console.log(experts)
   return (
     <Container>
       <Navbar className='mt-3'>
