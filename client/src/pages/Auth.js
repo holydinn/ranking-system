@@ -60,23 +60,20 @@ const Auth = observer(() => {
             {isLogin ?
               <div className="d-flex mt-2">
                 <div>Нет аккаунта?</div>
-                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}} href='/registration'> Зарегистрировться</Nav.Link>
+                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}} onClick={() => navigate('/registration')}> Зарегистрировться</Nav.Link>
               </div>
               :
               <div className="d-flex mt-2">
                 <div>Есть аккаунт?</div>
-                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}} href='/login'> Войти</Nav.Link>
+                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}} onClick={() => navigate('/login')}> Войти</Nav.Link>
               </div>
             }
             <Button variant={"outline-secondary"} onClick={click}>
               {isLogin ? 'Войти' : 'Создать'}
             </Button>
           </Form.Group>
-
-
         </Form>
       </Card>
-
     </Container>
   );
 })
