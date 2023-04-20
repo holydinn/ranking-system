@@ -10,7 +10,6 @@ import CreateEventPage from "./pages/Event/CreateEventPage.js";
 import EventPage from "./pages/Event/EventPage.js";
 import Results from "./pages/Result/Results.js";
 import ResultPage from "./pages/Result/ResultPage.js";
-import Votes from "./pages/Vote/Votes.js";
 import VotePage from "./pages/Vote/VotePage.js";
 import VotePageAuth from "./pages/Vote/VotePageAuth.js";
 
