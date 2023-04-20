@@ -17,7 +17,7 @@ const Events = observer(() => {
   }, [event])
 
   return (
-    <Container>
+    <Container className="mb-3">
       <Navbar className='mt-3 d-flex justify-content-between'>
           <Breadcrumb className="mt-lg-2 fs-2">
             <Breadcrumb.Item active>Мероприятия</Breadcrumb.Item>

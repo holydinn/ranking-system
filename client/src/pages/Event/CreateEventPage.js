@@ -107,7 +107,7 @@ const CreateEventPage = observer(() => {
   }
 
   return (
-    <Container>
+    <Container className="mb-3">
 
       <Navbar className='mt-3'>
 
