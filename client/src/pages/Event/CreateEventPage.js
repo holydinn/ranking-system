@@ -75,9 +75,9 @@ const CreateEventPage = observer(() => {
       if (!eventName || eventName === '') {
         throw new SyntaxError('Вы не ввели название мероприятия!')
       }
-      console.log(expert)
-      console.log(alt)
-      console.log(numExperts)
+      // console.log(expert)
+      // console.log(alt)
+      // console.log(numExperts)
       expert.forEach((input) => {
         if (!input || input === '' || expert.length !== numExperts) {
           throw new SyntaxError('Вы ввели не все имена экспертов!')

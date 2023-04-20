@@ -54,7 +54,7 @@ const ResultPage = observer(() => {
   if (loading) {
     return <Spinner animation={"grow"}/>
   }
-console.log(experts)
+
   return (
     <Container>
       <Navbar className='mt-3'>
@@ -73,8 +73,7 @@ console.log(experts)
         <Alert variant="info" className="mb-3">
           <p>Коэффициент конкордации равен {parseFloat(cof).toFixed(3)}</p>
           <hr/>
-          <p>Степень согласованности мнений экспертов определяется при помощи коэффицента конкордации,
-            который принимает значение, равное 1 при полной согласованности ответов экспертов,
+          <p>Коэффициент конкордации определяет степень согласованности мнений экспертов и принимает значение, равное 1 при полной согласованности ответов экспертов,
             и 0 при полной несогласованности</p>
         </Alert>
         <Row className="mb-3 fs-5" style={{fontWeight: 'bold'}}>

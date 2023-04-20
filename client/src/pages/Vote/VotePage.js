@@ -42,15 +42,15 @@ const VotePage = observer(() => {
   };
 
   const addRanking = async () => {
-    console.log(alts)
+    //console.log(alts)
     const temp = Array.from(alts).map(item => parseInt(item.id))
-    console.log(temp)
+    //console.log(temp)
     let ranking = []
     temp.forEach((value, index) => {
       ranking[value - 1] = index + 1
     })
     await updateExpert(id, {ranking})
-    console.log(ranking)
+    //console.log(ranking)
     await alert('Ваш голос отправлен!')
     await navigate('/')
   }

@@ -43,7 +43,7 @@ const EventPage = observer(() => {
       const URL = window.URL.createObjectURL(blob);
       const el = document.createElement("a");
       el.href = URL;
-      console.log(e)
+      //console.log(e)
       el.download = `qr_${eventName.name}_${e.target.id}.png`;
       el.click();
       window.URL.revokeObjectURL(URL);
