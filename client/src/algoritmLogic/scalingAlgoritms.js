@@ -1,12 +1,12 @@
 import jStat from "jstat";
 import * as myF from "./helpFunctions.js";
 
-export const oneDimensionalScaling = (alternatives,transRankedMatrix) => {
+export const oneDimensionalScaling = (alternatives, transRankedMatrix) => {
   let relMatrices = []  //массив матриц отношений
 
   //матрица предпочтений
   transRankedMatrix.forEach((exp, expIndex) => {
-    relMatrices[expIndex] = myF.createRelationalMatrix(exp, 'scale',alternatives)
+    relMatrices[expIndex] = myF.createRelationalMatrix(exp, 'scale', alternatives)
   })
 
   //частотная матрица предпочтений (p-)
@@ -41,7 +41,11 @@ export const oneDimensionalScaling = (alternatives,transRankedMatrix) => {
     indOfRelImportance[i] = averagePref[i] / averageInd
   }
 
-  let resRank = myF.sortByKey(indOfRelImportance,alternatives)
+  let resRank = myF.sortByKey(indOfRelImportance, alternatives)
+  let indexes = []
+  for (let i = 0; i < resRank.length; i++) {
+    indexes[i] = indOfRelImportance[resRank[i][0] - 1]
+  }
 
   let diffNormDev = jStat.zeros(alternatives.length)  //разности средних нормированных отклоннений (~zi-~zj)
   let frecPref = jStat.zeros(alternatives.length)  //частота предпочтений i перед j
@@ -65,7 +69,7 @@ export const oneDimensionalScaling = (alternatives,transRankedMatrix) => {
   // console.log('3 сигма: ', 3 * sigma)
 
   if (jStat.max(maxFrecs) < 3 * sigma) {
-    return {name: ["Согласно модели Терстоуна экспертные оценки не противоречивы"], resRank}
+    return {name: ["Согласно модели Терстоуна экспертные оценки не противоречивы"], resRank, indexes}
   }
   return {name: ["Согласно модели Терстоуна экспертные оценки противоречивы"]}
 

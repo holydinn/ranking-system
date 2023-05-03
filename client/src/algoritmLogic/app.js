@@ -50,7 +50,7 @@ export const doAlgoritms = async (experts, alternatives) => {
     const resRankKey = JSON.stringify(obj.resRank);
 
     if (!resRankMap.has(resRankKey)) {
-      resRankMap.set(resRankKey, { name: [obj.name], resRank: obj.resRank });
+      resRankMap.set(resRankKey, {name: [obj.name], resRank: obj.resRank});
     } else {
       const existingObj = resRankMap.get(resRankKey);
       existingObj.name.push(obj.name);
@@ -59,15 +59,27 @@ export const doAlgoritms = async (experts, alternatives) => {
 
   const result = Array.from(resRankMap.values());
 
-  const oneDimenScale = oneDimensionalScaling(alternatives, transRankedMatrix)
+  //const oneDimenScale = oneDimensionalScaling(alternatives, transRankedMatrix)
 
-  result.push(oneDimenScale)
+  //result.push(oneDimenScale)
 
 
   return (result)
 }
 
-export const concordanceCoef =  (experts, alternatives) => {
+export const concordanceCoef = (experts, alternatives) => {
   return (concordanceCof(experts, alternatives))
+
+}
+
+export const thurstone = (experts, alternatives) => {
+  const rankedMatrix = myF.createMatrixExpertRang(experts, alternatives)
+
+//транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
+  const transRankedMatrix = jStat.transpose(rankedMatrix)
+  const oneDimenScale = oneDimensionalScaling(alternatives, transRankedMatrix)
+  console.log(oneDimenScale)
+
+  return (oneDimenScale)
 
 }
