@@ -28,7 +28,7 @@ const ResultPage = observer(() => {
   const [experts, setExperts] = useState([])
   const [alternatives, setAlternatives] = useState([])
   const [result, setResult] = useState([])
-  const [tstone, setTstone] = useState('')
+  const [tstone, setTstone] = useState([])
   const [cof, setCof] = useState('')
 
   useEffect(() => {

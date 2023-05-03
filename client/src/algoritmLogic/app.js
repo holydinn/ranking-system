@@ -78,7 +78,7 @@ export const thurstone = (experts, alternatives) => {
 //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
   const transRankedMatrix = jStat.transpose(rankedMatrix)
   const oneDimenScale = oneDimensionalScaling(alternatives, transRankedMatrix)
-  console.log(oneDimenScale)
+  //console.log(oneDimenScale)
 
   return (oneDimenScale)
 
