@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, HashRouter} from "react-router-dom";
 import AppRouter from "./routes.js";
 import NavBar from "./components/NavBar.js";
 import {useContext} from "react";
@@ -29,7 +29,7 @@ const App = observer(() => {
     return <Spinner animation={"grow"}/>
   }
   return (
-    <BrowserRouter>
+    <HashRouter>
       {user._isAuth &&
         <>
           <div className="d-flex">
@@ -50,7 +50,7 @@ const App = observer(() => {
           </div>
         </>
       }
-    </BrowserRouter>
+    </HashRouter>
 
   )
 })
