@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/authMiddleware')
 
 router.post('/registration',[
     check('email', "Некорректный email").isEmail(),
-    check('password', "Пароль должен быть больше 4 и меньше 10 символов").isLength({min:4, max:10})
+    check('password', "Пароль должен быть больше 4 символов").isLength({min:4})
   ], adminController.registration)
 router.post('/login',adminController.login)
 router.get('/auth', authMiddleware, adminController.check)

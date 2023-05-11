@@ -28,15 +28,6 @@ class AlternativeController {
     }
   }
 
-  async getOne(req, res) {
-    try {
-      const {id} = req.params
-      const alt = await Alternative.findOne({where:{id}})
-      return res.json(alt)
-    } catch (e) {
-      res.status(500).json({message: 'Что-то пошло не так'})
-    }
-  }
   async deleteAllByEvent(req, res) {
     try {
       let {eventId} = req.query

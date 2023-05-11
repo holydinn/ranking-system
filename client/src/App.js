@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {BrowserRouter, HashRouter} from "react-router-dom";
+import {HashRouter} from "react-router-dom";
 import AppRouter from "./routes.js";
 import NavBar from "./components/NavBar.js";
 import {useContext} from "react";

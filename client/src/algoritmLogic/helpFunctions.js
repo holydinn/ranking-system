@@ -1,9 +1,6 @@
 import jStat from "jstat";
 import _ from "lodash";
 
-export const createExpert = (name, points,exps) => {
-  exps.push({name: name, index: exps.length + 1, points: points})
-};
 
 export const createCompareMatrix = (rankMatrix,alternatives) => {
   //матрица попарных сравнений альтернатив
@@ -17,7 +14,6 @@ export const createCompareMatrix = (rankMatrix,alternatives) => {
       //удаляем предпочтительную альтернативу из дальнейшей обработки
       preferredItems.unshift(copyExpRank.shift() - 1)
       comparisonMatrix[preferredItems[0]].forEach((value, index, array) => {
-
         //увеличиваем число экспертов для которых данная альт-ва предпочтительна
         if (!preferredItems.includes(index)) {
           array[index]++
@@ -67,7 +63,6 @@ export const createMatrixExpertRang = (experts,alternatives) => {
       rankedMatrix[experts[i].points[j] - 1][i] = j + 1
     }
   }
-
   return rankedMatrix
 };
 
@@ -82,7 +77,6 @@ export const createRelationalMatrix = (matrix, key ,alternatives) => {
     //удаляем предпочтительную альтернативу из дальнейшей обработки
     preferredItems.unshift(expertRank.shift() - 1)
     relMatrix[preferredItems[0]].forEach((value, index, array) => {
-
       // 1 - если альт-вы нет в preferredItems, т.е. она лучше
       // -1 - если альт-ва есть в preferredItems, т.е. она хуже
       if (!preferredItems.includes(index)) {
@@ -107,7 +101,6 @@ export const findDistance = (matrix1, matrix2) => {
       dist += Math.abs((matrix1[i][j] - matrix2[i][j]))
     }
   }
-
   return dist
 };
 
@@ -142,7 +135,6 @@ export const findMinDist = (distMatrix) => {
     })
     minDist = Math.min.apply(null, temp)
   }
-
   return sumDist.indexOf(minDist)
 };
 
@@ -165,7 +157,6 @@ export const createLossMatrix = (matrixArray,alternatives) => {
       }
     }
   })
-
   return lossMatrix
 };
 
@@ -179,7 +170,6 @@ export const deleteMatrixRowClm = (matrix, altIndex) => {
     matrix[i][altIndex] = 0
   }
   return matrix
-
 };
 
 export const findNormalInv = (x) => {
@@ -199,7 +189,6 @@ export const multiplyMatrix = (matrix, num) => {
   return jStat.map(matrix, function (x) {
     return x * num
   })
-
 }
 
 export const sumMatrix = (matrixArray) => {
@@ -213,5 +202,4 @@ export const sumMatrix = (matrixArray) => {
     }
   })
   return resMatrix
-
 }

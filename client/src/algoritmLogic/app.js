@@ -16,36 +16,28 @@ export const doAlgoritms = async (experts, alternatives) => {
 //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
   const transRankedMatrix = jStat.transpose(rankedMatrix)
   const resMajorityRule = relativeMajorityRule(rankedMatrix)
-
   results.push(resMajorityRule)
 
   const resCondorcetWinner = condorcetWinner(alternatives, transRankedMatrix)
-
   results.push(resCondorcetWinner)
 
   const resCopelandRule = copelandRule(alternatives, transRankedMatrix)
-
   results.push(resCopelandRule)
 
   const resSimpsonRule = simpsonRule(alternatives, transRankedMatrix)
-
   results.push(resSimpsonRule)
 
   const resBordRule = bordRule(alternatives, transRankedMatrix)
-
   results.push(resBordRule)
 
   const resMedianKemeny = medianKemeny(transRankedMatrix, alternatives)
-
   results.push(resMedianKemeny)
 
   const resNewMedianKemeny = newMedianKemeny(transRankedMatrix, alternatives)
-
   results.push(resNewMedianKemeny)
 
 
   const resRankMap = new Map();
-
   for (const obj of results) {
     const resRankKey = JSON.stringify(obj.resRank);
 
@@ -58,18 +50,11 @@ export const doAlgoritms = async (experts, alternatives) => {
   }
 
   const result = Array.from(resRankMap.values());
-
-  //const oneDimenScale = oneDimensionalScaling(alternatives, transRankedMatrix)
-
-  //result.push(oneDimenScale)
-
-
   return (result)
 }
 
 export const concordanceCoef = (experts, alternatives) => {
   return (concordanceCof(experts, alternatives))
-
 }
 
 export const thurstone = (experts, alternatives) => {
@@ -78,7 +63,6 @@ export const thurstone = (experts, alternatives) => {
 //транспонированная матрица Эксперт-Ранг для удобного обхода ранжировки
   const transRankedMatrix = jStat.transpose(rankedMatrix)
   const oneDimenScale = oneDimensionalScaling(alternatives, transRankedMatrix)
-  //console.log(oneDimenScale)
 
   return (oneDimenScale)
 

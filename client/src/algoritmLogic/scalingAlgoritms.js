@@ -42,17 +42,14 @@ export const oneDimensionalScaling = (alternatives, transRankedMatrix) => {
   }
 
   let resRank = myF.sortByKey(indOfRelImportance, alternatives)
+
   let indexes = []
   for (let i = 0; i < resRank.length; i++) {
-    //console.log(resRank[i])
     if(resRank[i].length>1){
-     // console.log(resRank[i])
       indexes[i] = indOfRelImportance[resRank[i][0] - 1]
     }else {
-      //console.log(indOfRelImportance[resRank[i][0] - 1])
       indexes[i] = indOfRelImportance[resRank[i] - 1]
     }
-
   }
 
   let diffNormDev = jStat.zeros(alternatives.length)  //разности средних нормированных отклоннений (~zi-~zj)
@@ -73,8 +70,6 @@ export const oneDimensionalScaling = (alternatives, transRankedMatrix) => {
   })
   let sigma = jStat.sum(diffFrecs) / (alternatives.length * (alternatives.length - 1))
 
-  // console.log('наибольшая частоста: ', jStat.max(maxFrecs))
-  // console.log('3 сигма: ', 3 * sigma)
 
   if (jStat.max(maxFrecs) < 3 * sigma) {
     return {name: ["Согласно модели Терстоуна экспертные оценки не противоречивы"], resRank, indexes}

@@ -50,7 +50,7 @@ const VotePageAuth = observer(() => {
     })
     await updateExpertAuth(id, {ranking})
     await alert('Ваш голос отправлен!')
-    await navigate('/events/')
+    await navigate(`/events/${eventName.id}`)
 
   }
 
@@ -58,7 +58,9 @@ const VotePageAuth = observer(() => {
     <Container className="mb-3">
       <Navbar className='mt-3'>
         <Breadcrumb className="mt-lg-2 fs-2">
-          <Breadcrumb.Item style={{color: '#495057'}} active>{eventName.name}</Breadcrumb.Item>
+          <Breadcrumb.Item onClick={() => navigate(`/events/`)}>Мероприятия</Breadcrumb.Item>
+          <Breadcrumb.Item onClick={() => navigate(`/events/${eventName.id}`)} >{eventName.name}</Breadcrumb.Item>
+          <Breadcrumb.Item style={{color: '#495057'}} active>{expert.name}</Breadcrumb.Item>
         </Breadcrumb>
       </Navbar>
       {expert.ranking &&

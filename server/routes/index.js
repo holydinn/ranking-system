@@ -12,8 +12,8 @@ router.use('/admin', adminRouter)
 router.use('/event', eventRouter)
 router.use('/alternative', alternativeRouter)
 router.use('/expert', expertRouter)
-router.use('/result', resulRouter)
-router.use('/vote', voteRouter)
+// router.use('/result', resulRouter)
+// router.use('/vote', voteRouter)
 
 
 module.exports = router

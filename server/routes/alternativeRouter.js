@@ -4,7 +4,7 @@ const alternativeController=require('../controllers/alternativeController')
 
 router.post('/',alternativeController.create)
 router.get('/',alternativeController.getAll)
-router.get('/:id',alternativeController.getOne)
+// router.get('/:id',alternativeController.getOne)
 router.delete('/',alternativeController.deleteAllByEvent)
 
 module.exports = router
