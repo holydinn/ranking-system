@@ -13,7 +13,7 @@ class ExpertController {
         .then((expert) => {
           const savedId = expert.id
           //expert.update({link: `http://localhost:3000/votes/${savedId}`})
-          expert.update({link: `https://holydinn.space/votes/${savedId}`})
+          expert.update({link: `https://holydinn.space/#/votes/${savedId}`})
         })
 
       return res.json(expert)
