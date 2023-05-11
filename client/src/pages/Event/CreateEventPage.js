@@ -1,9 +1,10 @@
 import React, {useContext, useState} from 'react';
-import {Breadcrumb, Button, Col, Container, Form, Navbar, Row} from "react-bootstrap";
+import {Breadcrumb, Button, Col, Container, Form,  Navbar, Row} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {Context} from "../../index.js";
 import {createAlternative, createEvent, createExpert} from "../../http/eventAPI.js";
 import {observer} from "mobx-react-lite";
+import ModalComponent from "../../components/Modal.js";
 
 
 const CreateEventPage = observer(() => {
@@ -90,7 +91,9 @@ const CreateEventPage = observer(() => {
       })
       addEvent()
     } catch (e) {
-      alert(e.message)
+      setError(e.message)
+      handleModalShow(e.message)
+      //alert(e.message)
     }
   }
 
@@ -99,12 +102,38 @@ const CreateEventPage = observer(() => {
       const curEvent = await createEvent({name: eventName, adminId: user.user.id})
       await expert.forEach((input) => (createExpert({name: input, eventId: curEvent.id})))
       await alt.forEach((input) => (createAlternative({name: input, eventId: curEvent.id})))
-      await alert('Мероприятие успешно добавлено!')
-      await navigate('/events')
+      await setError('')
+      await handleModalShow('success')
+      //await alert('Мероприятие успешно добавлено!')
+      //await navigate('/events')
     } catch (e) {
-      alert(e.response.data.message)
+      await setError(e.response.data.message)
+      await handleModalShow(e.response.data.message)
+      //alert(e.response.data.message)
     }
   }
+  const [show, setShow] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const [error, setError] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleModalClose = () => {
+    setShow(false);
+  }
+  const handleModalShow = (type) => {
+    setModalType(type);
+    setShow(true)
+    if (type !== 'success'){
+      setIsSuccess(false);
+    } else{
+      setIsSuccess(true);
+    }
+
+    }
+  const handleSuccessClose = () => {
+    setIsSuccess(true);
+    navigate('/events');
+  };
 
   return (
     <Container className="mb-3">
@@ -170,6 +199,18 @@ const CreateEventPage = observer(() => {
         >
           Добавить мероприятие
         </Button>
+        <ModalComponent
+          show={show}
+          onHide={handleModalClose}
+          title={modalType === 'success' ? 'Успех!' : 'Ошибка!'}
+          body={
+            modalType === 'success' &&
+               'Мероприятие успешно добавлено!'
+          }
+          error={error}
+          isSuccess={isSuccess}
+          onSuccessClose={handleSuccessClose}
+        />
       </Form>
 
 

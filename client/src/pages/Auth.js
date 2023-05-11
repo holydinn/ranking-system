@@ -4,6 +4,7 @@ import {useLocation, useNavigate,} from "react-router-dom";
 import {Context} from "../index.js";
 import {login, registration} from "../http/userAPI.js";
 import {observer} from "mobx-react-lite";
+import ModalComponent from "../components/Modal.js";
 
 const Auth = observer(() => {
   const {user} = useContext(Context)
@@ -27,14 +28,51 @@ const Auth = observer(() => {
       user.setIsAuth(true)
       navigate('/')
     } catch (e) {
-      alert(e.response.data.message)
+      await setError(e.response.data.message)
+      await handleModalShow(e.response.data.message)
     }
   }
+
+  const [show, setShow] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const [error, setError] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleModalClose = () => {
+    setShow(false);
+  }
+  const handleModalShow = (type) => {
+    setModalType(type);
+    setShow(true)
+    if (type !== 'success'){
+      setIsSuccess(false);
+    } else{
+      setIsSuccess(true);
+    }
+
+  }
+  const handleSuccessClose = () => {
+    setIsSuccess(true);
+    navigate('/');
+  };
+
   return (
     <Container
       className="d-flex justify-content-center align-items-center"
       style={{height: window.innerHeight - 54}}
     >
+      <ModalComponent
+        show={show}
+        onHide={handleModalClose}
+        title={modalType === 'success' ? 'Успех!' : 'Ошибка!'}
+        body={
+          modalType === 'success' &&
+          'Мероприятие успешно добавлено!'
+        }
+        error={error}
+        isSuccess={isSuccess}
+        onSuccessClose={handleSuccessClose}
+      />
       <Card style={{width: 600}} className="p-5">
         <h2 className="m-auto">{isLogin ? 'Войти в систему' : 'Создать аккаунт'}</h2>
         <Form className="d-flex flex-column">

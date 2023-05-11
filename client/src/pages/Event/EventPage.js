@@ -11,6 +11,7 @@ import {
 import {useContext} from "react";
 import {Context} from "../../index.js";
 import QrCode from "qrcode.react";
+import ModalComponent from "../../components/Modal.js";
 
 const EventPage = observer(() => {
   const navigate = useNavigate()
@@ -29,10 +30,14 @@ const EventPage = observer(() => {
       await deleteOneEvent(user.user.id, eventName.id)
       await deleteExpert(eventName.id)
       await deleteAlternatives(eventName.id)
-      await alert('Мероприятие успешно удалено!')
-      await navigate('/events')
+      await setError('')
+      await handleModalShow('success')
+      // await alert('Мероприятие успешно удалено!')
+      // await navigate('/events')
     } catch (e) {
-      alert(e.response.data.message)
+      await setError(e.response.data.message)
+      await handleModalShow(e.response.data.message)
+      //alert(e.response.data.message)
     }
   }
 
@@ -53,6 +58,31 @@ const EventPage = observer(() => {
     user.setUser({})
     user.setIsAuth(false)
   }
+
+  const [show, setShow] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const [error, setError] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleModalClose = () => {
+    setShow(false);
+  }
+  const handleModalShow = (type) => {
+    setModalType(type);
+    setShow(true)
+    if (type !== 'success'){
+      setIsSuccess(false);
+    } else{
+      setIsSuccess(true);
+    }
+
+  }
+  const handleSuccessClose = () => {
+    setIsSuccess(true);
+    navigate('/events');
+  };
+
+
   return (
     <Container className="mb-3">
       <Navbar className='mt-3 d-flex justify-content-between'>
@@ -131,7 +161,18 @@ const EventPage = observer(() => {
             </Row>
           )}
         </Col>
-
+        <ModalComponent
+          show={show}
+          onHide={handleModalClose}
+          title={modalType === 'success' ? 'Успех!' : 'Ошибка!'}
+          body={
+            modalType === 'success' &&
+            'Мероприятие успешно удалено!'
+          }
+          error={error}
+          isSuccess={isSuccess}
+          onSuccessClose={handleSuccessClose}
+        />
 
       </Container>
 

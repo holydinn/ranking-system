@@ -10,6 +10,7 @@ import {observer} from "mobx-react-lite";
 import {useNavigate, useParams} from "react-router-dom";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import "../../index.css"
+import ModalComponent from "../../components/Modal.js";
 
 const VotePage = observer(() => {
   const {event} = useContext(Context)
@@ -51,12 +52,49 @@ const VotePage = observer(() => {
     })
     await updateExpert(id, {ranking})
     //console.log(ranking)
-    await alert('Ваш голос отправлен!')
-    await navigate('/')
+    await setError('')
+    await handleModalShow('success')
+    //await alert('Ваш голос отправлен!')
+    //await navigate('/')
   }
+
+  const [show, setShow] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const [error, setError] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleModalClose = () => {
+    setShow(false);
+  }
+  const handleModalShow = (type) => {
+    setModalType(type);
+    setShow(true)
+    if (type !== 'success'){
+      setIsSuccess(false);
+    } else{
+      setIsSuccess(true);
+    }
+
+  }
+  const handleSuccessClose = () => {
+    setIsSuccess(true);
+    navigate('/');
+  };
 
   return (
     <Container className="mb-3">
+      <ModalComponent
+        show={show}
+        onHide={handleModalClose}
+        title={modalType === 'success' ? 'Успех!' : 'Ошибка!'}
+        body={
+          modalType === 'success' &&
+          'Ваш голос отправлен!'
+        }
+        error={error}
+        isSuccess={isSuccess}
+        onSuccessClose={handleSuccessClose}
+      />
       <Navbar className='mt-3'>
         <Breadcrumb className="mt-lg-2 fs-2">
           <Breadcrumb.Item style={{color: '#495057'}} active>{eventName.name}</Breadcrumb.Item>

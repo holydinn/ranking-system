@@ -10,6 +10,7 @@ import {
 import {Breadcrumb, Button, Container, Navbar, Row} from "react-bootstrap";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import "../../index.css"
+import ModalComponent from "../../components/Modal.js";
 
 const VotePageAuth = observer(() => {
   const {event} = useContext(Context)
@@ -49,13 +50,50 @@ const VotePageAuth = observer(() => {
       ranking[value - 1] = index + 1
     })
     await updateExpertAuth(id, {ranking})
-    await alert('Ваш голос отправлен!')
-    await navigate(`/events/${eventName.id}`)
+    await setError('')
+    await handleModalShow('success')
+    // await alert('Ваш голос отправлен!')
+    // await navigate(`/events/${eventName.id}`)
 
   }
 
+  const [show, setShow] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const [error, setError] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleModalClose = () => {
+    setShow(false);
+  }
+  const handleModalShow = (type) => {
+    setModalType(type);
+    setShow(true)
+    if (type !== 'success'){
+      setIsSuccess(false);
+    } else{
+      setIsSuccess(true);
+    }
+
+  }
+  const handleSuccessClose = () => {
+    setIsSuccess(true);
+    navigate(`/events/${eventName.id}`);
+  };
+
   return (
     <Container className="mb-3">
+      <ModalComponent
+        show={show}
+        onHide={handleModalClose}
+        title={modalType === 'success' ? 'Успех!' : 'Ошибка!'}
+        body={
+          modalType === 'success' &&
+          'Ваш голос отправлен!'
+        }
+        error={error}
+        isSuccess={isSuccess}
+        onSuccessClose={handleSuccessClose}
+      />
       <Navbar className='mt-3'>
         <Breadcrumb className="mt-lg-2 fs-2">
           <Breadcrumb.Item onClick={() => navigate(`/events/`)}>Мероприятия</Breadcrumb.Item>
