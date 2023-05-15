@@ -44,9 +44,9 @@ const Auth = observer(() => {
   const handleModalShow = (type) => {
     setModalType(type);
     setShow(true)
-    if (type !== 'success'){
+    if (type !== 'success') {
       setIsSuccess(false);
-    } else{
+    } else {
       setIsSuccess(true);
     }
 
@@ -93,17 +93,21 @@ const Auth = observer(() => {
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
+            {!isLogin && <Form.Text className="text-muted"> Пароль должен содержать не менее 4 символов. </Form.Text>}
+
           </Form.Group>
           <Form.Group className="d-flex justify-content-between mt-3">
             {isLogin ?
               <div className="d-flex mt-2">
                 <div>Нет аккаунта?</div>
-                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}} onClick={() => navigate('/registration')}> Зарегистрировться</Nav.Link>
+                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}}
+                          onClick={() => navigate('/registration')}> Зарегистрировться</Nav.Link>
               </div>
               :
               <div className="d-flex mt-2">
                 <div>Есть аккаунт?</div>
-                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}} onClick={() => navigate('/login')}> Войти</Nav.Link>
+                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}}
+                          onClick={() => navigate('/login')}> Войти</Nav.Link>
               </div>
             }
             <Button variant={"outline-secondary"} onClick={click}>
