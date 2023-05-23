@@ -41,8 +41,8 @@ const EventPage = observer(() => {
     }
   }
 
-  const downloadImage = async (e) => {
-      const canvas = document.querySelector("canvas");
+  const downloadImage = async (e,id) => {
+      const canvas = document.querySelector(`.exp${id}`);
       const imageDataURI = canvas.toDataURL("png", 1.0);
       const blob = await (await fetch(imageDataURI)).blob();
       const URL = window.URL.createObjectURL(blob);
@@ -53,11 +53,7 @@ const EventPage = observer(() => {
       el.click();
       window.URL.revokeObjectURL(URL);
     }
-  ;
-  const logOut = () => {
-    user.setUser({})
-    user.setIsAuth(false)
-  }
+
 
   const [show, setShow] = useState(false);
   const [modalType, setModalType] = useState('');
@@ -120,23 +116,21 @@ const EventPage = observer(() => {
               <Col sm="3">
                 <h7
                    onClick={() => navigate(`/votes/${item.id}`)}
-                  // onClick={() => {
-                  //   logOut()
-                  //   navigate(`/votes/${item.id}`)
-                  // }}
                   style={{cursor: 'pointer'}}
                   className="link-secondary"
                 >{item.link}</h7>
               </Col>
               <Col sm="2">
                 <QrCode
+
                   value={item.link}
                   size={80}
                   level="M"
+                  className={`exp${item.id}`}
                 />
               </Col>
               <Col sm="1">
-                <Button id={item.name} variant="outline-secondary" onClick={downloadImage}>Скачать</Button>
+                <Button id={item.name} variant="outline-secondary" onClick={(e)=>downloadImage(e,item.id)}>Скачать</Button>
               </Col>
             </Row>
           )}
