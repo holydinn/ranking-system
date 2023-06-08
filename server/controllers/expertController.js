@@ -45,8 +45,12 @@ class ExpertController {
 
   async updateOne(req, res) {
     try {
-      const { id } = req.params;
-      const { ranking } = req.body;
+      const {id} = req.params;
+      const {ranking} = req.body;
+      const candidate = await Expert.findOne({where: {id: req.params.id}})
+      if (candidate.ranking !== null) {
+        return res.status(400).json({message: "Голос уже был отправлен"})
+      }
       const expert = await Expert.update(
         {ranking},
         {where: {id}}
