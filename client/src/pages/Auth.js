@@ -5,6 +5,7 @@ import {Context} from "../index.js";
 import {login, registration} from "../http/userAPI.js";
 import {observer} from "mobx-react-lite";
 import ModalComponent from "../components/Modal.js";
+import { useMediaQuery } from 'react-responsive';
 
 const Auth = observer(() => {
   const {user} = useContext(Context)
@@ -56,6 +57,19 @@ const Auth = observer(() => {
     navigate('/');
   };
 
+  const isSmScreen = useMediaQuery({ query: '(min-width: 450px)' });
+  const isxSScreen = useMediaQuery({ query: '(min-width: 370px)' });
+  const isXxsScreen = useMediaQuery({ query: '(max-width: 409px)' });
+
+  const getLinkFontSize = () => {
+    if  (isSmScreen) {
+      return 16;
+    }else if (isxSScreen) {
+      return 14;
+    }
+    return 12; // Default font size for xs screens
+  };
+
   return (
     <Container
       className="d-flex justify-content-center align-items-center"
@@ -96,24 +110,46 @@ const Auth = observer(() => {
             {!isLogin && <Form.Text className="text-muted"> Пароль должен содержать не менее 4 символов. </Form.Text>}
 
           </Form.Group>
-          <Form.Group className="d-flex justify-content-between mt-3">
-            {isLogin ?
-              <div className="d-flex mt-2">
-                <div>Нет аккаунта?</div>
-                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}}
-                          onClick={() => navigate('/registration')}> Зарегистрировться</Nav.Link>
-              </div>
-              :
-              <div className="d-flex mt-2">
-                <div>Есть аккаунт?</div>
-                <Nav.Link style={{color: '#6c757d', paddingLeft: 5}}
-                          onClick={() => navigate('/login')}> Войти</Nav.Link>
-              </div>
-            }
-            <Button variant={"outline-secondary"} onClick={click}>
-              {isLogin ? 'Войти' : 'Создать'}
-            </Button>
-          </Form.Group>
+          {!isXxsScreen ?
+            <Form.Group className="d-flex justify-content-between mt-3">
+              {isLogin ?
+                <div className="d-flex mt-2">
+                  <div style={{fontSize: getLinkFontSize()}}>Нет аккаунта?</div>
+                  <Nav.Link style={{color: '#6c757d', paddingLeft: 5,fontSize: getLinkFontSize()}}
+                            onClick={() => navigate('/registration')}> Зарегистрировться</Nav.Link>
+                </div>
+                :
+                <div className="d-flex mt-2">
+                  <div style={{fontSize: getLinkFontSize()}}>Есть аккаунт?</div>
+                  <Nav.Link style={{color: '#6c757d', paddingLeft: 5,fontSize: getLinkFontSize()}}
+                            onClick={() => navigate('/login')}> Войти</Nav.Link>
+                </div>
+              }
+              <Button variant={"outline-secondary"} onClick={click}>
+                {isLogin ? 'Войти' : 'Создать'}
+              </Button>
+            </Form.Group>
+          :
+            <Form.Group className="d-grid gap-2 mt-3">
+              <Button variant={"outline-secondary"} onClick={click}>
+                {isLogin ? 'Войти' : 'Создать'}
+              </Button>
+              {isLogin ?
+                <div className="d-flex justify-content-center mt-3">
+                  <div style={{fontSize: getLinkFontSize()}}>Нет аккаунта?</div>
+                  <Nav.Link style={{color: '#6c757d', paddingLeft: 5,fontSize: getLinkFontSize()}}
+                            onClick={() => navigate('/registration')}> Зарегистрировться</Nav.Link>
+                </div>
+                :
+                <div className="d-flex justify-content-center mt-3">
+                  <div style={{fontSize: getLinkFontSize()}}>Есть аккаунт?</div>
+                  <Nav.Link style={{color: '#6c757d', paddingLeft: 5,fontSize: getLinkFontSize()}}
+                            onClick={() => navigate('/login')}> Войти</Nav.Link>
+                </div>
+              }
+            </Form.Group>
+          }
+
         </Form>
       </Card>
     </Container>
