@@ -59,7 +59,7 @@ const Auth = observer(() => {
 
   const isSmScreen = useMediaQuery({ query: '(min-width: 450px)' });
   const isxSScreen = useMediaQuery({ query: '(min-width: 370px)' });
-  const isXxsScreen = useMediaQuery({ query: '(max-width: 409px)' });
+  const isXxsScreen = useMediaQuery({ query: '(max-width: 425px)' });
 
   const getLinkFontSize = () => {
     if  (isSmScreen) {
