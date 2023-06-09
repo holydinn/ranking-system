@@ -45,9 +45,9 @@ const App = observer(() => {
       {!user._isAuth &&
         <>
           <NavBar/>
-          <div className="container">
+          {/*<div className="container">*/}
             <AppRouter/>
-          </div>
+          {/*</div>*/}
         </>
       }
     </HashRouter>
