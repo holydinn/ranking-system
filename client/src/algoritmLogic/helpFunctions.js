@@ -133,7 +133,11 @@ export const findMinDist = (distMatrix) => {
     let temp = sumDist.filter((val) => {
       return val !== 0
     })
-    minDist = Math.min.apply(null, temp)
+    if (temp.length === 0) {
+      return 0
+    }else {
+      minDist = Math.min.apply(null, temp)
+    }
   }
   return sumDist.indexOf(minDist)
 };
